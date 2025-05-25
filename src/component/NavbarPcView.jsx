@@ -5,7 +5,7 @@ import loginIcon from "../assets/loginicon.png";
 
 export default function NavbarPcView({
   setSearch,
-  isLogin,
+  userInfo,
   useImageUrl,
   setUserInfo,
 }) {
@@ -35,7 +35,7 @@ export default function NavbarPcView({
             placeholder="검색"
             onChange={(e) => setSearch(e.target.value)}
           />
-          {!isLogin ? (
+          {!userInfo ? (
             <Link
               to="/login"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"

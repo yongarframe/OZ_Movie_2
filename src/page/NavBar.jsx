@@ -47,14 +47,14 @@ export default function NavBar() {
       {isMobile ? (
         <NavbarMobileView
           setSearch={setSearch}
-          isLogin={isLogin}
+          userInfo={userInfo}
           useImageUrl={userInfo?.user?.profileImageUrl}
           setUserInfo={setUserInfo}
         />
       ) : (
         <NavbarPcView
           setSearch={setSearch}
-          isLogin={isLogin}
+          userInfo={userInfo}
           useImageUrl={userInfo?.user?.profileImageUrl}
           setUserInfo={setUserInfo}
         />

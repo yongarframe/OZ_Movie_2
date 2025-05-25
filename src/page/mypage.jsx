@@ -9,8 +9,6 @@ function MyPage() {
   const { userInfo, setUserInfo } = useUserInfo();
   const { logout } = useSupabaseAuth();
 
-  console.log(userInfo);
-
   // useEffect(() => {
   //   const fetchUserInfo = async () => {
   //     const userInfo = await getUserInfo();

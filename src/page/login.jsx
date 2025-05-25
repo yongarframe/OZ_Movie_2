@@ -21,6 +21,7 @@ export default function Login() {
     // 카카오 로그인 처리
     loginWithKakao();
     console.log("카카오 로그인");
+    setIsLogin(true);
   };
 
   const handleGoogleLogin = async () => {
@@ -31,6 +32,7 @@ export default function Login() {
       if (error) throw error;
 
       // 로그인 성공 시 처리
+      setIsLogin(true);
       console.log("구글 로그인 성공:", data);
     } catch (error) {
       console.error("구글 로그인 실패:", error.message);
@@ -133,12 +135,12 @@ export default function Login() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-3">
-            <button
+            {/* <button
               onClick={handleNaverLogin}
               className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-[#03C75A] text-sm font-medium text-white hover:bg-opacity-90"
             >
               네이버로 로그인
-            </button>
+            </button> */}
             <button
               onClick={handleKakaoLogin}
               className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-[#FEE500] text-sm font-medium text-gray-900 hover:bg-opacity-90"

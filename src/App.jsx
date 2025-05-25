@@ -18,7 +18,7 @@ import { useIsUserLogin } from "./store";
 function App() {
   const { fetchData } = useMovieData();
   const { getUserInfo } = useSupabaseAuth();
-  const { userInfo, setUserInfo } = useUserInfo();
+  const { setUserInfo } = useUserInfo();
   const { isLogin } = useIsUserLogin();
 
   useEffect(() => {
@@ -28,8 +28,6 @@ function App() {
     };
     fetchUserInfo();
   }, [isLogin]); // 로그인, 로그아웃 시에만 실행
-
-  console.log(userInfo);
 
   useEffect(() => {
     fetchData();

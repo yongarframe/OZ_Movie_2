@@ -12,16 +12,12 @@ export default function MovieDetail() {
     setIsLoading(true); // 데이터 받기 전 loading 상태
     fetchMovieDetail(id);
   }, [id, fetchMovieDetail]);
-  console.log("movieDetail", !!movieDetail);
-  console.log("setIsLoading", isLoading);
 
   useEffect(() => {
     if (movieDetail) {
       setIsLoading(false); //데이터 받은 후 loading 상태 해제
     }
   }, [movieDetail]);
-  console.log("movieDetail.id", typeof movieDetail.id, movieDetail.id);
-  console.log("id", typeof id, id);
 
   {
     if (isLoading || !movieDetail || Number(id) !== movieDetail.id) {

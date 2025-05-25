@@ -63,12 +63,14 @@ export const useSearchMovie = create((set) => ({
 export const useUserInfo = create((set) => ({
   userInfo: "",
   setUserInfo: async (userInfo) => {
-    console.log(userInfo);
     set(() => ({ userInfo: userInfo }));
   },
 }));
 
 export const useIsUserLogin = create((set) => ({
   isLogin: false,
-  setIsLogin: (isLogin) => set(() => ({ isLogin: !!isLogin })),
+  setIsLogin: (isLogin) =>
+    set(() => {
+      return { isLogin: !!isLogin };
+    }),
 }));
