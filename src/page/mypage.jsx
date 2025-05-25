@@ -39,12 +39,14 @@ function MyPage() {
         />
         <h2>{userInfo?.user?.userName}</h2>
         <p>{userInfo?.user?.email}</p>
-        <button
-          className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
-          onClick={handleLogout}
-        >
-          로그아웃
-        </button>
+        {!!userInfo && (
+          <button
+            className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
+            onClick={handleLogout}
+          >
+            로그아웃
+          </button>
+        )}
       </div>
 
       <div className="menu-section">

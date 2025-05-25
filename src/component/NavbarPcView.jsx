@@ -50,12 +50,14 @@ export default function NavbarPcView({
               로그아웃
             </button>
           )}
-          <Link
-            to="/mypage"
-            className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-          >
-            마이페이지
-          </Link>
+          {!!userInfo && (
+            <Link
+              to="/mypage"
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
+            >
+              마이페이지
+            </Link>
+          )}
           <Link
             to="/signup"
             className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
