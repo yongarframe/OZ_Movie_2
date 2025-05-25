@@ -1,19 +1,23 @@
 import { useState, useEffect } from "react";
 import "../App.css";
 import { useSupabaseAuth } from "../supabase";
+import { useIsUserLogin, useUserInfo } from "../store";
 
 function MyPage() {
-  const [userInfo, setUserInfo] = useState("");
-  const { getUserInfo } = useSupabaseAuth();
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      const userInfo = await getUserInfo();
-      setUserInfo(userInfo.user);
-    };
-    fetchUserInfo();
-  }, []);
+  // const [userInfo, setUserInfo] = useState("");
+  const { setIsLogin } = useIsUserLogin();
+  const { userInfo, setUserInfo } = useUserInfo();
   const { logout } = useSupabaseAuth();
+
+  console.log(userInfo);
+
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     const userInfo = await getUserInfo();
+  //     setUserInfo(userInfo.user);
+  //   };
+  //   fetchUserInfo();
+  // }, []);
 
   const handleLogout = async () => {
     try {
@@ -21,6 +25,7 @@ function MyPage() {
       setUserInfo("");
       // 로그아웃 후 처리 로직 추가 가능
       console.log("로그아웃 성공");
+      setIsLogin(false);
     } catch (error) {
       console.error("로그아웃 실패:", error.message);
     }
@@ -30,12 +35,12 @@ function MyPage() {
     <div className="mypage-container">
       <div className="flex flex-col items-center justify-center">
         <img
-          src={userInfo.profileImageUrl}
+          src={userInfo?.user?.profileImageUrl}
           alt="프로필 이미지"
           className="profile-image"
         />
-        <h2>{userInfo.userName}</h2>
-        <p>{userInfo.email}</p>
+        <h2>{userInfo?.user?.userName}</h2>
+        <p>{userInfo?.user?.email}</p>
         <button
           className="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
           onClick={handleLogout}

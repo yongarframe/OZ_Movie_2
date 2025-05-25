@@ -8,7 +8,7 @@ export default function MovieCardRender({ movieData }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {movieData.map((movie) => (
             <li
-              className="list-none transform hover:-translate-y-2 transition-all duration-300"
+              className="list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer"
               key={movie.id}
               onClick={() => navigate(`/movie/${movie.id}`)}
             >
@@ -19,7 +19,7 @@ export default function MovieCardRender({ movieData }) {
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                     alt={movie.name}
                   />
-                  <div className="absolute top-2 right-2 bg-yellow-400 text-black font-bold px-2 py-1 rounded-full text-sm">
+                  <div className="absolute top-2 right-2 bg-yellow-400 text-black font-bold px-2 py-1 z-10 bg-opacity-80 backdrop-blur-sm rounded-full text-sm">
                     ⭐ {movie.vote_average.toFixed(1)}
                   </div>
                 </div>

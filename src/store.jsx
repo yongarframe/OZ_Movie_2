@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 const API = import.meta.env.VITE_API_TOKEN;
 
 export const useMovieData = create((set) => ({
@@ -36,7 +35,6 @@ export const useMovieDetail = create((set) => ({
       `https://api.themoviedb.org/3/movie/${id}?language=ko`,
       options
     );
-    console.log(response);
     const data = await response.json();
 
     set((state) => ({ ...state, movieDetail: data }));
@@ -53,13 +51,24 @@ export const useSearchMovie = create((set) => ({
         Authorization: `Bearer ${API}`,
       },
     };
-    console.log("useSearchMovie params", params);
     const response = await fetch(
       `https://api.themoviedb.org/3/search/movie?query=${params}&include_adult=false&language=ko&page=1`,
       options
     );
     const data = await response.json();
-    console.log("data", data);
     set((state) => ({ ...state, searchMovie: data.results }));
   },
+}));
+
+export const useUserInfo = create((set) => ({
+  userInfo: "",
+  setUserInfo: async (userInfo) => {
+    console.log(userInfo);
+    set(() => ({ userInfo: userInfo }));
+  },
+}));
+
+export const useIsUserLogin = create((set) => ({
+  isLogin: false,
+  setIsLogin: (isLogin) => set(() => ({ isLogin: !!isLogin })),
 }));

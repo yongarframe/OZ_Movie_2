@@ -1,48 +1,64 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useDebounce from "../customHooks/useDebounce";
+import NavbarPcView from "../component/NavbarPcView";
+import NavbarMobileView from "../component/NavbarMobileView";
+import { useSupabaseAuth } from "../supabase";
+import { useIsUserLogin, useUserInfo } from "../store";
 
 export default function NavBar() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const debounceValue = useDebounce(search, 1000);
+  const { getUserInfo } = useSupabaseAuth();
+  const { isLogin, setIsLogin } = useIsUserLogin();
+  const { userInfo, setUserInfo } = useUserInfo();
+  // const [userInfo, setUserInfo] = useState("");
 
   useEffect(() => {
     if (debounceValue) {
       navigate(`/search?movie=${debounceValue}`);
     } else {
-      navigate(`/`);
+      // navigate(`/`);  // 적용 시 구글로그인 시 local data 사라짐
     }
   }, [debounceValue]);
 
+  // useEffect(() => {
+  //   const fetchUserInfo = async () => {
+  //     const userInfo = await getUserInfo();
+  //     setIsLogin(userInfo);
+  //     setUserInfo(userInfo.user);
+  //   };
+  //   fetchUserInfo();
+  // }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="flex justify-end space-x-4">
-        <button
-          className="text-2xl font-bold cursor-pointer text-blue-600"
-          onClick={() => navigate(`/`)}
-        >
-          🎬 OZ무비
-        </button>
-        <input
-          className="text-white"
-          type="text"
-          placeholder="검색"
-          onChange={(e) => setSearch(e.target.value)}
+    <>
+      {isMobile ? (
+        <NavbarMobileView
+          setSearch={setSearch}
+          isLogin={isLogin}
+          useImageUrl={userInfo?.user?.profileImageUrl}
+          setUserInfo={setUserInfo}
         />
-        <Link
-          to="/login"
-          className="text-white hover:text-gray-300 px-3 py-2 rounded-md"
-        >
-          로그인
-        </Link>
-        <Link
-          to="/mypage"
-          className="text-white hover:text-gray-300 px-3 py-2 rounded-md"
-        >
-          마이페이지
-        </Link>
-      </div>
-    </nav>
+      ) : (
+        <NavbarPcView
+          setSearch={setSearch}
+          isLogin={isLogin}
+          useImageUrl={userInfo?.user?.profileImageUrl}
+          setUserInfo={setUserInfo}
+        />
+      )}
+    </>
   );
 }
