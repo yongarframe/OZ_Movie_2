@@ -58,12 +58,14 @@ export default function NavbarPcView({
               마이페이지
             </Link>
           )}
-          <Link
-            to="/signup"
-            className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-          >
-            회원가입
-          </Link>
+          {!userInfo && (
+            <Link
+              to="/signup"
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
+            >
+              회원가입
+            </Link>
+          )}
           <img
             className="w-[50px] h-[50px] cursor-pointer rounded-full object-cover"
             src={useImageUrl ? useImageUrl : loginIcon}
