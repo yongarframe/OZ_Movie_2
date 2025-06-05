@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useDebounce from "../customHooks/useDebounce";
 import NavbarPcView from "../component/NavbarPcView";
 import NavbarMobileView from "../component/NavbarMobileView";
+import { useUserInfo } from "../store";
 
 export default function NavBar() {
   const navigate = useNavigate();
