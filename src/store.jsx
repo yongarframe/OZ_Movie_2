@@ -42,8 +42,8 @@ export const useMovieDetail = create((set) => ({
 }));
 
 export const useSearchMovie = create((set) => ({
-  searchMovie: [],
-  fetchSearchMovie: async (params) => {
+  videoMovie: [],
+  fetchVideoMovie: async (params) => {
     const options = {
       method: "GET",
       headers: {
@@ -56,7 +56,28 @@ export const useSearchMovie = create((set) => ({
       options
     );
     const data = await response.json();
-    set((state) => ({ ...state, searchMovie: data.results }));
+    set(() => ({ videoMovie: data.results }));
+  },
+}));
+
+export const useVideoMovie = create((set) => ({
+  videoMovie: [],
+  fetchVideoMovie: async (id) => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${API}`,
+      },
+    };
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/videos`,
+      options
+    );
+    const data = await response.json();
+
+    // console.log(data);
+    set(() => ({ videoMovie: data.results }));
   },
 }));
 

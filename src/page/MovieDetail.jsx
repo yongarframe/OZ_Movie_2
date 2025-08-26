@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useMovieDetail } from "../store";
+import { useMovieDetail, useVideoMovie } from "../store";
 import { useEffect, useState } from "react";
 import SkeletonMovieDetail from "../component/SkeletonMovieDetail";
 
@@ -7,6 +7,10 @@ export default function MovieDetail() {
   const { id } = useParams();
   const { movieDetail, fetchMovieDetail } = useMovieDetail();
   const [isLoading, setIsLoading] = useState(true);
+  const [trailerKey, setTrailerKey] = useState(null);
+  const { videoMovie, fetchVideoMovie } = useVideoMovie();
+  const [hover, setHover] = useState(false);
+  const API = import.meta.env.VITE_API_TOKEN;
 
   useEffect(() => {
     setIsLoading(true); // 데이터 받기 전 loading 상태
@@ -19,11 +23,24 @@ export default function MovieDetail() {
     }
   }, [movieDetail]);
 
+  useEffect(() => {
+    fetchVideoMovie(id);
+  }, [id, fetchMovieDetail]);
+
+  useEffect(() => {
+    if (videoMovie && videoMovie.length > 0) {
+      setTrailerKey(videoMovie[1]?.key || videoMovie[0]?.key);
+    }
+  }, [videoMovie]);
+
   {
     if (isLoading || !movieDetail || Number(id) !== movieDetail.id) {
       return <SkeletonMovieDetail />;
     }
   }
+
+  const YT_EMBED = (id) =>
+    `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${id}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-8">
@@ -34,6 +51,8 @@ export default function MovieDetail() {
               className="w-full h-[300px] md:h-[500px] object-cover"
               src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
               alt={movieDetail.title}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
             />
             <div className="absolute top-4 right-4 bg-yellow-400 text-black font-bold px-4 py-2 rounded-full text-lg">
               ⭐ {movieDetail.vote_average?.toFixed(1)}
@@ -65,6 +84,15 @@ export default function MovieDetail() {
           </div>
         </div>
       </div>
+      {trailerKey && (
+        <iframe
+          title="trailer"
+          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          src={YT_EMBED(trailerKey)}
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      )}
     </div>
   );
 }
