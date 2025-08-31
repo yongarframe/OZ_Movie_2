@@ -54,6 +54,15 @@ export default function MovieDetail() {
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
             />
+            {trailerKey && (
+              <iframe
+                title="trailer"
+                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                src={YT_EMBED(trailerKey)}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                allowFullScreen
+              />
+            )}
             <div className="absolute top-4 right-4 bg-yellow-400 text-black font-bold px-4 py-2 rounded-full text-lg">
               ⭐ {movieDetail.vote_average?.toFixed(1)}
             </div>
@@ -84,15 +93,6 @@ export default function MovieDetail() {
           </div>
         </div>
       </div>
-      {trailerKey && (
-        <iframe
-          title="trailer"
-          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-          src={YT_EMBED(trailerKey)}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        />
-      )}
     </div>
   );
 }

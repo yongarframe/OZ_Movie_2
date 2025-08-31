@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useVideoMovie } from "../store";
 import { useEffect, useState } from "react";
 
 export default function MovieCard({
@@ -38,13 +37,17 @@ export default function MovieCard({
     fetchTrailer();
   }, [id]);
 
+  console.log(hover);
+
   const YT_EMBED = (key) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`;
 
   return (
     <li
-      className="list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+      className="list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative"
       onClick={() => navigate(`/movie/${id}`)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="relative">
@@ -52,18 +55,8 @@ export default function MovieCard({
             className="w-full h-[300px] object-cover"
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt={name}
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
           />
-          {trailerKey && (
-            <iframe
-              title="trailer"
-              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0 pointer-events-none"}`}
-              src={YT_EMBED(trailerKey)}
-              allow="autoplay; encrypted-media; picture-in-picture"
-              allowFullScreen
-            />
-          )}
+
           <div className="absolute top-2 right-2 bg-yellow-400 text-black font-bold px-2 py-1 z-10 bg-opacity-80 backdrop-blur-sm rounded-full text-sm">
             ⭐ {vote_average.toFixed(1)}
           </div>
@@ -82,6 +75,15 @@ export default function MovieCard({
           </div>
         </div>
       </div>
+      {trailerKey && (
+        <iframe
+          title="trailer"
+          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100 pointer-events-none" : "opacity-0 "}`}
+          src={YT_EMBED(trailerKey)}
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      )}
     </li>
   );
 }
