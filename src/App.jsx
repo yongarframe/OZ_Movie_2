@@ -16,10 +16,9 @@ import MovieCardRender from './page/MovieCardRender'
 // import Search from "./component/Search";
 
 function App() {
-  const { fetchData } = useMovieData()
   const { getUserInfo } = useSupabaseAuth()
-  const { setUserInfo } = useUserInfo()
-  const { isLogin } = useIsUserLogin()
+  const setUserInfo = useUserInfo((state) => state.setUserInfo)
+  const isLogin = useIsUserLogin((state) => state.isLogin)
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -28,10 +27,6 @@ function App() {
     }
     fetchUserInfo()
   }, [isLogin]) // 로그인, 로그아웃 시에만 실행
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
 
   return (
     <Routes>

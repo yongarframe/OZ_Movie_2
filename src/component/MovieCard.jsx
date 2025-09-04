@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 export default function MovieCard({
   id,
   poster_path,
-  name,
   vote_average,
   title,
   popularity,
@@ -52,7 +51,7 @@ export default function MovieCard({
           <img
             className="w-full h-[300px] object-cover"
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-            alt={name}
+            alt={title}
           />
 
           <div className="absolute top-2 right-2 bg-yellow-400 text-black font-bold px-2 py-1 z-10 bg-opacity-80 backdrop-blur-sm rounded-full text-sm">
@@ -73,15 +72,13 @@ export default function MovieCard({
           </div>
         </div>
       </div>
-      {trailerKey && (
-        <iframe
-          title="trailer"
-          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
-          src={YT_EMBED(trailerKey)}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        />
-      )}
+      <iframe
+        title="trailer"
+        className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
+        src={hover ? YT_EMBED(trailerKey) : ''}
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+      />
     </li>
   )
 }

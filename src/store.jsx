@@ -3,7 +3,7 @@ const API = import.meta.env.VITE_API_TOKEN
 
 export const useMovieData = create((set) => ({
   movieData: [],
-  fetchData: async () => {
+  fetchMovieData: async (page = 1) => {
     const options = {
       method: 'GET',
       headers: {
@@ -12,12 +12,16 @@ export const useMovieData = create((set) => ({
       },
     }
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?language=ko&page=1&region=ko`,
+      `https://api.themoviedb.org/3/movie/popular?language=ko&page=${page}&region=ko`,
       options
     )
 
     const data = await response.json()
-    set((state) => ({ ...state, movieData: data.results }))
+    console.log(data)
+    set((state) => ({
+      ...state,
+      movieData: [...state.movieData, ...data.results],
+    }))
   },
 }))
 
