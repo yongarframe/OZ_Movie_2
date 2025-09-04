@@ -3,8 +3,16 @@ import { DTO_TYPE } from './config'
 // User data 매핑용 함수
 export const changeFromDto = ({ type, dto }) => {
   switch (type) {
-    case DTO_TYPE.user:
-      const { user_metadata: userInfo } = dto?.user
+    case DTO_TYPE.user: {
+      const { user_metadata: userInfo } = dto?.user ?? {}
+      if (!userInfo) {
+        return {
+          error: {
+            status: 400,
+            message: '유저 정보가 존재하지 않습니다.',
+          },
+        }
+      }
       return {
         user: {
           id: userInfo.sub,
@@ -15,7 +23,8 @@ export const changeFromDto = ({ type, dto }) => {
           profileImageUrl: userInfo.avatar_url,
         },
       }
-    case DTO_TYPE.error:
+    }
+    case DTO_TYPE.error: {
       if (!dto.error) {
         return {
           error: {
@@ -25,6 +34,7 @@ export const changeFromDto = ({ type, dto }) => {
           },
         }
       }
+
       const { error: rawError } = dto
 
       return {
@@ -33,6 +43,7 @@ export const changeFromDto = ({ type, dto }) => {
           message: rawError.message,
         },
       }
+    }
 
     default:
       new Error('wrong type accessed')
