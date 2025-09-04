@@ -37,8 +37,6 @@ export default function MovieCard({
     fetchTrailer();
   }, [id]);
 
-  console.log(hover);
-
   const YT_EMBED = (key) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`;
 

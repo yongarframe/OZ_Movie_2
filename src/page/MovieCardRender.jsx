@@ -1,6 +1,8 @@
-import MovieCard from "./MovieCard";
+import MovieCard from "../component/MovieCard";
+import { useMovieData } from "../store";
 
-export default function MovieCardRender({ movieData }) {
+export default function MovieCardRender() {
+  const { movieData } = useMovieData();
   return (
     <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen py-8">
       <div className="max-w-[1200px] mx-auto px-4">

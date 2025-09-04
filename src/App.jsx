@@ -5,7 +5,6 @@ import MyPage from "./page/mypage";
 import Layout from "./page/layout";
 import { useMovieData } from "./store";
 import { useEffect } from "react";
-import MovieCard from "./page/MovieCard";
 import MovieDetail from "./page/MovieDetail";
 import NotFound from "./page/NotFound";
 import Search from "./component/Search";
@@ -13,6 +12,7 @@ import Signup from "./page/Signup";
 import { useSupabaseAuth } from "./supabase";
 import { useUserInfo } from "./store";
 import { useIsUserLogin } from "./store";
+import MovieCardRender from "./page/MovieCardRender";
 // import Search from "./component/Search";
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<MovieCard />} />
+        <Route path="/" element={<MovieCardRender />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/movie/:id" element={<MovieDetail />} />

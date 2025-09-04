@@ -14,13 +14,11 @@ export default function Login() {
   const handleNaverLogin = () => {
     // 네이버 로그인 처리
     loginWithNaver();
-    console.log("네이버 로그인");
   };
 
   const handleKakaoLogin = () => {
     // 카카오 로그인 처리
     loginWithKakao();
-    console.log("카카오 로그인");
     setIsLogin(true);
   };
 
@@ -33,7 +31,6 @@ export default function Login() {
 
       // 로그인 성공 시 처리
       setIsLogin(true);
-      console.log("구글 로그인 성공:", data);
     } catch (error) {
       console.error("구글 로그인 실패:", error.message);
     }
@@ -118,7 +115,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 cursor-pointer"
           >
             로그인
           </button>
@@ -143,13 +140,13 @@ export default function Login() {
             </button> */}
             <button
               onClick={handleKakaoLogin}
-              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-[#FEE500] text-sm font-medium text-gray-900 hover:bg-opacity-90"
+              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-[#FEE500] text-sm font-medium text-gray-900 hover:bg-opacity-90 cursor-pointer"
             >
               카카오로 로그인
             </button>
             <button
               onClick={handleGoogleLogin}
-              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
             >
               구글로 로그인
             </button>

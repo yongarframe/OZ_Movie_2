@@ -76,7 +76,6 @@ export const useVideoMovie = create((set) => ({
     );
     const data = await response.json();
 
-    // console.log(data);
     set(() => ({ videoMovie: data.results }));
   },
 }));

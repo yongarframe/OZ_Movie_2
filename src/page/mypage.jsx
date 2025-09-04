@@ -20,8 +20,6 @@ function MyPage() {
     try {
       await logout();
       setUserInfo("");
-      // 로그아웃 후 처리 로직 추가 가능
-      console.log("로그아웃 성공");
       setIsLogin(false);
     } catch (error) {
       console.error("로그아웃 실패:", error.message);
