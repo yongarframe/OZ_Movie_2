@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useSupabaseAuth } from "../supabase";
-import { useIsUserLogin } from "../store";
-import loginIcon from "../assets/loginicon.png";
+import { Link, useNavigate } from 'react-router-dom'
+import { useSupabaseAuth } from '../supabase'
+import { useIsUserLogin } from '../store'
+import loginIcon from '../assets/loginicon.png'
 
 export default function NavbarPcView({
   setSearch,
@@ -9,16 +9,16 @@ export default function NavbarPcView({
   useImageUrl,
   setUserInfo,
 }) {
-  const navigate = useNavigate();
-  const { logout } = useSupabaseAuth();
-  const { setIsLogin } = useIsUserLogin();
+  const navigate = useNavigate()
+  const { logout } = useSupabaseAuth()
+  const { setIsLogin } = useIsUserLogin()
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
-    setIsLogin(false);
-    setUserInfo("");
-  };
+    await logout()
+    navigate('/')
+    setIsLogin(false)
+    setUserInfo('')
+  }
   return (
     <nav className="bg-gray-800 p-4">
       <div className="flex justify-between items-center space-x-4">
@@ -74,5 +74,5 @@ export default function NavbarPcView({
         </div>
       </div>
     </nav>
-  );
+  )
 }

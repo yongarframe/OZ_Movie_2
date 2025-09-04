@@ -1,40 +1,40 @@
 // import { useNavigate, useSearchParams } from "react-router-dom";
 // import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSupabaseAuth } from "../supabase";
-import { delay } from "../util/delay";
-import { useState } from "react";
-import { useIsUserLogin } from "../store";
+import { useNavigate } from 'react-router-dom'
+import { useSupabaseAuth } from '../supabase'
+import { delay } from '../util/delay'
+import { useState } from 'react'
+import { useIsUserLogin } from '../store'
 
 export default function Login() {
   // const navigate = useNavigate();
   // const [searchParams, setSearchParams] = useSearchParams();
-  const { loginWithGoogle, loginWithNaver, loginWithKakao } = useSupabaseAuth();
+  const { loginWithGoogle, loginWithNaver, loginWithKakao } = useSupabaseAuth()
 
   const handleNaverLogin = () => {
     // 네이버 로그인 처리
-    loginWithNaver();
-  };
+    loginWithNaver()
+  }
 
   const handleKakaoLogin = () => {
     // 카카오 로그인 처리
-    loginWithKakao();
-    setIsLogin(true);
-  };
+    loginWithKakao()
+    setIsLogin(true)
+  }
 
   const handleGoogleLogin = async () => {
     // 구글 로그인 처리
     try {
-      const { data, error } = await loginWithGoogle();
+      const { data, error } = await loginWithGoogle()
 
-      if (error) throw error;
+      if (error) throw error
 
       // 로그인 성공 시 처리
-      setIsLogin(true);
+      setIsLogin(true)
     } catch (error) {
-      console.error("구글 로그인 실패:", error.message);
+      console.error('구글 로그인 실패:', error.message)
     }
-  };
+  }
 
   // useEffect(() => {
   //   const authorizationCode = searchParams.get("code");
@@ -42,41 +42,41 @@ export default function Login() {
   //   getGoogleUserInfo(authorizationCode);
   // }, []);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+    email: '',
+    password: '',
+  })
 
-  const { setIsLogin } = useIsUserLogin();
+  const { setIsLogin } = useIsUserLogin()
 
-  const { login } = useSupabaseAuth();
-  const navigate = useNavigate();
+  const { login } = useSupabaseAuth()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleEmailLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const { error } = await login({
         email: formData.email,
         password: formData.password,
-      });
+      })
 
-      if (error) throw error;
+      if (error) throw error
 
-      setIsLogin(true);
+      setIsLogin(true)
 
-      await delay(1000);
-      navigate("/");
+      await delay(1000)
+      navigate('/')
     } catch (error) {
-      console.error("로그인 실패:", error.message);
+      console.error('로그인 실패:', error.message)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -154,5 +154,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 export default function MovieCard({
   id,
@@ -10,11 +10,11 @@ export default function MovieCard({
   popularity,
   gender,
 }) {
-  const navigate = useNavigate();
-  const [hover, setHover] = useState(false);
-  const [trailerKey, setTrailerKey] = useState(null);
+  const navigate = useNavigate()
+  const [hover, setHover] = useState(false)
+  const [trailerKey, setTrailerKey] = useState(null)
 
-  const API = import.meta.env.VITE_API_TOKEN;
+  const API = import.meta.env.VITE_API_TOKEN
 
   useEffect(() => {
     // 카드 mount 시 한 번만 fetch
@@ -23,22 +23,22 @@ export default function MovieCard({
         `https://api.themoviedb.org/3/movie/${id}/videos`,
         {
           headers: {
-            accept: "application/json",
+            accept: 'application/json',
             Authorization: `Bearer ${API}`,
           },
         }
-      );
-      const data = await res.json();
+      )
+      const data = await res.json()
       const trailer = data.results.find(
-        (v) => v.type === "Trailer" && v.site === "YouTube"
-      );
-      setTrailerKey(trailer?.key);
+        (v) => v.type === 'Trailer' && v.site === 'YouTube'
+      )
+      setTrailerKey(trailer?.key)
     }
-    fetchTrailer();
-  }, [id]);
+    fetchTrailer()
+  }, [id])
 
   const YT_EMBED = (key) =>
-    `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`;
+    `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
 
   return (
     <li
@@ -76,12 +76,12 @@ export default function MovieCard({
       {trailerKey && (
         <iframe
           title="trailer"
-          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100 pointer-events-none" : "opacity-0 "}`}
+          className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
           src={YT_EMBED(trailerKey)}
           allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
         />
       )}
     </li>
-  );
+  )
 }

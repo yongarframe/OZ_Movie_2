@@ -28,5 +28,5 @@ export default function SkeletonMovieDetail() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,46 +1,46 @@
-import { useParams } from "react-router-dom";
-import { useMovieDetail, useVideoMovie } from "../store";
-import { useEffect, useState } from "react";
-import SkeletonMovieDetail from "../component/SkeletonMovieDetail";
+import { useParams } from 'react-router-dom'
+import { useMovieDetail, useVideoMovie } from '../store'
+import { useEffect, useState } from 'react'
+import SkeletonMovieDetail from '../component/SkeletonMovieDetail'
 
 export default function MovieDetail() {
-  const { id } = useParams();
-  const { movieDetail, fetchMovieDetail } = useMovieDetail();
-  const [isLoading, setIsLoading] = useState(true);
-  const [trailerKey, setTrailerKey] = useState(null);
-  const { videoMovie, fetchVideoMovie } = useVideoMovie();
-  const [hover, setHover] = useState(false);
-  const API = import.meta.env.VITE_API_TOKEN;
+  const { id } = useParams()
+  const { movieDetail, fetchMovieDetail } = useMovieDetail()
+  const [isLoading, setIsLoading] = useState(true)
+  const [trailerKey, setTrailerKey] = useState(null)
+  const { videoMovie, fetchVideoMovie } = useVideoMovie()
+  const [hover, setHover] = useState(false)
+  const API = import.meta.env.VITE_API_TOKEN
 
   useEffect(() => {
-    setIsLoading(true); // 데이터 받기 전 loading 상태
-    fetchMovieDetail(id);
-  }, [id, fetchMovieDetail]);
+    setIsLoading(true) // 데이터 받기 전 loading 상태
+    fetchMovieDetail(id)
+  }, [id, fetchMovieDetail])
 
   useEffect(() => {
     if (movieDetail) {
-      setIsLoading(false); //데이터 받은 후 loading 상태 해제
+      setIsLoading(false) //데이터 받은 후 loading 상태 해제
     }
-  }, [movieDetail]);
+  }, [movieDetail])
 
   useEffect(() => {
-    fetchVideoMovie(id);
-  }, [id, fetchMovieDetail]);
+    fetchVideoMovie(id)
+  }, [id, fetchMovieDetail])
 
   useEffect(() => {
     if (videoMovie && videoMovie.length > 0) {
-      setTrailerKey(videoMovie[1]?.key || videoMovie[0]?.key);
+      setTrailerKey(videoMovie[1]?.key || videoMovie[0]?.key)
     }
-  }, [videoMovie]);
+  }, [videoMovie])
 
   {
     if (isLoading || !movieDetail || Number(id) !== movieDetail.id) {
-      return <SkeletonMovieDetail />;
+      return <SkeletonMovieDetail />
     }
   }
 
   const YT_EMBED = (id) =>
-    `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${id}`;
+    `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${id}`
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-8">
@@ -57,7 +57,7 @@ export default function MovieDetail() {
             {trailerKey && (
               <iframe
                 title="trailer"
-                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 src={YT_EMBED(trailerKey)}
                 allow="autoplay; encrypted-media; picture-in-picture"
                 allowFullScreen
@@ -87,12 +87,12 @@ export default function MovieDetail() {
                 줄거리
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                {movieDetail.overview || "줄거리 정보가 없습니다."}
+                {movieDetail.overview || '줄거리 정보가 없습니다.'}
               </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

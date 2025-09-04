@@ -1,12 +1,12 @@
-import "../App.css";
-import { useSupabaseAuth } from "../supabase";
-import { useIsUserLogin, useUserInfo } from "../store";
+import '../App.css'
+import { useSupabaseAuth } from '../supabase'
+import { useIsUserLogin, useUserInfo } from '../store'
 
 function MyPage() {
   // const [userInfo, setUserInfo] = useState("");
-  const { setIsLogin } = useIsUserLogin();
-  const { userInfo, setUserInfo } = useUserInfo();
-  const { logout } = useSupabaseAuth();
+  const { setIsLogin } = useIsUserLogin()
+  const { userInfo, setUserInfo } = useUserInfo()
+  const { logout } = useSupabaseAuth()
 
   // useEffect(() => {
   //   const fetchUserInfo = async () => {
@@ -18,13 +18,13 @@ function MyPage() {
 
   const handleLogout = async () => {
     try {
-      await logout();
-      setUserInfo("");
-      setIsLogin(false);
+      await logout()
+      setUserInfo('')
+      setIsLogin(false)
     } catch (error) {
-      console.error("로그아웃 실패:", error.message);
+      console.error('로그아웃 실패:', error.message)
     }
-  };
+  }
 
   return (
     <div className="mypage-container">
@@ -62,7 +62,7 @@ function MyPage() {
         </ul>
       </div>
     </div>
-  );
+  )
 }
 
-export default MyPage;
+export default MyPage

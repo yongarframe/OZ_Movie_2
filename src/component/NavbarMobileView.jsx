@@ -1,8 +1,8 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useSupabaseAuth } from "../supabase";
-import { useIsUserLogin } from "../store";
-import loginIcon from "../assets/loginicon.png";
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useSupabaseAuth } from '../supabase'
+import { useIsUserLogin } from '../store'
+import loginIcon from '../assets/loginicon.png'
 
 export default function NavbarMobileView({
   setSearch,
@@ -10,17 +10,17 @@ export default function NavbarMobileView({
   useImageUrl,
   setUserInfo,
 }) {
-  const navigate = useNavigate();
-  const { logout } = useSupabaseAuth();
-  const { setIsLogin } = useIsUserLogin();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate()
+  const { logout } = useSupabaseAuth()
+  const { setIsLogin } = useIsUserLogin()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
-    setIsLogin(false);
-    setUserInfo("");
-  };
+    await logout()
+    navigate('/')
+    setIsLogin(false)
+    setUserInfo('')
+  }
 
   return (
     <nav className="bg-gray-800 p-4">
@@ -47,7 +47,7 @@ export default function NavbarMobileView({
               strokeLinejoin="round"
               strokeWidth={2}
               d={
-                isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"
+                isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'
               }
             />
           </svg>
@@ -99,5 +99,5 @@ export default function NavbarMobileView({
         </div>
       )}
     </nav>
-  );
+  )
 }

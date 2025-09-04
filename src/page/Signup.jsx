@@ -1,77 +1,77 @@
-import { useState } from "react";
-import { useSupabaseAuth } from "../supabase";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react'
+import { useSupabaseAuth } from '../supabase'
+import { useNavigate } from 'react-router-dom'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    email: "",
-    name: "",
-    password: "",
-    confirmPassword: "",
-  });
+    email: '',
+    name: '',
+    password: '',
+    confirmPassword: '',
+  })
 
-  const [errors, setErrors] = useState({});
-  const { signUp } = useSupabaseAuth();
-  const navigate = useNavigate();
+  const [errors, setErrors] = useState({})
+  const { signUp } = useSupabaseAuth()
+  const navigate = useNavigate()
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors = {}
 
     // 이메일 검증
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
     if (!formData.email) {
-      newErrors.email = "이메일을 입력해주세요";
+      newErrors.email = '이메일을 입력해주세요'
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = "올바른 이메일 형식이 아닙니다";
+      newErrors.email = '올바른 이메일 형식이 아닙니다'
     }
 
     // 이름 검증
-    const nameRegex = /^[가-힣a-zA-Z]{2,8}$/;
+    const nameRegex = /^[가-힣a-zA-Z]{2,8}$/
     if (!formData.name) {
-      newErrors.name = "이름을 입력해주세요";
+      newErrors.name = '이름을 입력해주세요'
     } else if (!nameRegex.test(formData.name)) {
-      newErrors.name = "이름은 2~8자의 한글 또는 영문만 가능합니다";
+      newErrors.name = '이름은 2~8자의 한글 또는 영문만 가능합니다'
     }
 
     // 비밀번호 검증
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
     if (!formData.password) {
-      newErrors.password = "비밀번호를 입력해주세요";
+      newErrors.password = '비밀번호를 입력해주세요'
     } else if (!passwordRegex.test(formData.password)) {
-      newErrors.password = "비밀번호는 영문 대/소문자와 숫자를 포함해야 합니다";
+      newErrors.password = '비밀번호는 영문 대/소문자와 숫자를 포함해야 합니다'
     }
 
     // 비밀번호 확인 검증
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "비밀번호 확인을 입력해주세요";
+      newErrors.confirmPassword = '비밀번호 확인을 입력해주세요'
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "비밀번호가 일치하지 않습니다";
+      newErrors.confirmPassword = '비밀번호가 일치하지 않습니다'
     }
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (validateForm()) {
       await signUp({
         email: formData.email,
         password: formData.password,
         userName: formData.name,
-      });
-      navigate("/login");
+      })
+      navigate('/login')
     }
-  };
+  }
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -153,5 +153,5 @@ export default function Signup() {
         </form>
       </div>
     </div>
-  );
+  )
 }

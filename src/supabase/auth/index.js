@@ -1,11 +1,11 @@
-import { useAuth } from "./useAuth";
-import { useEmailAuth } from "./useEmail.auth";
-import { useOAuth } from "./useOauth.auth";
+import { useAuth } from './useAuth'
+import { useEmailAuth } from './useEmail.auth'
+import { useOAuth } from './useOauth.auth'
 
 export const useSupabaseAuth = () => {
-  const { getUserInfo, logout } = useAuth();
-  const { login, signUp } = useEmailAuth();
-  const { loginWithGoogle, loginWithKakao } = useOAuth();
+  const { getUserInfo, logout } = useAuth()
+  const { login, signUp } = useEmailAuth()
+  const { loginWithGoogle, loginWithKakao } = useOAuth()
 
   return {
     login,
@@ -14,5 +14,5 @@ export const useSupabaseAuth = () => {
     logout,
     loginWithKakao,
     loginWithGoogle,
-  };
-};
+  }
+}

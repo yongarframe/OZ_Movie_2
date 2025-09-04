@@ -1,37 +1,37 @@
-import "./App.css";
-import { Routes, Route, Link } from "react-router-dom";
-import Login from "./page/login";
-import MyPage from "./page/mypage";
-import Layout from "./page/layout";
-import { useMovieData } from "./store";
-import { useEffect } from "react";
-import MovieDetail from "./page/MovieDetail";
-import NotFound from "./page/NotFound";
-import Search from "./component/Search";
-import Signup from "./page/Signup";
-import { useSupabaseAuth } from "./supabase";
-import { useUserInfo } from "./store";
-import { useIsUserLogin } from "./store";
-import MovieCardRender from "./page/MovieCardRender";
+import './App.css'
+import { Routes, Route, Link } from 'react-router-dom'
+import Login from './page/login'
+import MyPage from './page/mypage'
+import Layout from './page/layout'
+import { useMovieData } from './store'
+import { useEffect } from 'react'
+import MovieDetail from './page/MovieDetail'
+import NotFound from './page/NotFound'
+import Search from './component/Search'
+import Signup from './page/Signup'
+import { useSupabaseAuth } from './supabase'
+import { useUserInfo } from './store'
+import { useIsUserLogin } from './store'
+import MovieCardRender from './page/MovieCardRender'
 // import Search from "./component/Search";
 
 function App() {
-  const { fetchData } = useMovieData();
-  const { getUserInfo } = useSupabaseAuth();
-  const { setUserInfo } = useUserInfo();
-  const { isLogin } = useIsUserLogin();
+  const { fetchData } = useMovieData()
+  const { getUserInfo } = useSupabaseAuth()
+  const { setUserInfo } = useUserInfo()
+  const { isLogin } = useIsUserLogin()
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const user = await getUserInfo();
-      setUserInfo(user);
-    };
-    fetchUserInfo();
-  }, [isLogin]); // 로그인, 로그아웃 시에만 실행
+      const user = await getUserInfo()
+      setUserInfo(user)
+    }
+    fetchUserInfo()
+  }, [isLogin]) // 로그인, 로그아웃 시에만 실행
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData()
+  }, [fetchData])
 
   return (
     <Routes>
@@ -45,7 +45,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
       </Route>
     </Routes>
-  );
+  )
 }
 
-export default App;
+export default App
