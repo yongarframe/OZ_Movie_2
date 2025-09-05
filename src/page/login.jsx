@@ -1,14 +1,10 @@
-// import { useNavigate, useSearchParams } from "react-router-dom";
-// import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
-import { useSupabaseAuth } from '../supabase'
-import { delay } from '../util/delay'
+import { useSupabaseAuth } from '@/supabase'
+import { delay } from '@/util/delay'
 import { useState } from 'react'
-import { useIsUserLogin } from '../store'
+import { useIsUserLogin } from '@/store'
 
 export default function Login() {
-  // const navigate = useNavigate();
-  // const [searchParams, setSearchParams] = useSearchParams();
   const { loginWithGoogle, loginWithNaver, loginWithKakao } = useSupabaseAuth()
 
   const handleNaverLogin = () => {

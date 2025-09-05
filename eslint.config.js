@@ -27,7 +27,7 @@ export default tseslint.config(
   // 4. 메인 설정 블록
   {
     // 적용할 파일 확장자 지정
-    files: ['**/*.{js,ts,tsx}'],
+    files: ['**/*.{js,ts,tsx,jsx'],
 
     // 사용할 플러그인들 등록
     plugins: {

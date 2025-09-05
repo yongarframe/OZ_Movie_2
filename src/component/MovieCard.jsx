@@ -75,7 +75,7 @@ export default function MovieCard({
       <iframe
         title="trailer"
         className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
-        src={hover ? YT_EMBED(trailerKey) : ''}
+        src={hover ? YT_EMBED(trailerKey) : null}
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
       />

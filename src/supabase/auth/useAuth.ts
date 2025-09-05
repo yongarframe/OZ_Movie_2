@@ -1,4 +1,4 @@
-import { useSupabase } from '..'
+import { useSupabase } from '@/supabase/context/useSupabase'
 import {
   changeFromDto,
   DTO_TYPE,
@@ -29,7 +29,7 @@ export const useAuth = () => {
         type: data.user ? DTO_TYPE.user : DTO_TYPE.error,
         dto: data,
       })
-      if (userInfo.user) {
+      if (userInfo?.user) {
         setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
       }
       return userInfo
@@ -41,11 +41,11 @@ export const useAuth = () => {
           type: !error ? DTO_TYPE.user : DTO_TYPE.error,
           dto: { user: data.user, error },
         })
-        if (userInfo.user) {
+        if (userInfo?.user) {
           setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
         }
         return userInfo
-      } catch (_error) {
+      } catch {
         void 0
       }
     }
