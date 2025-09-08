@@ -33,11 +33,13 @@ export default function MovieCardRender({
         if (observer && node) observer.unobserve(node)
       }
     },
-    [page]
+    [page, loading]
   )
 
   useEffect(() => {
-    fetchMovieData(page)
+    if (movieData.length === 0) {
+      fetchMovieData(page)
+    }
   }, [])
 
   return (
