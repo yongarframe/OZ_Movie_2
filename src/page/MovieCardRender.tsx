@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useState } from 'react'
 import MovieCard from '../component/MovieCard'
-import { useMovieData } from '../store'
+import { useMovieData } from '@/store/useMovieData'
 
 export default function MovieCardRender() {
   const fetchMovieData = useMovieData((state) => state.fetchMovieData)
   const [page, setPage] = useState(1)
   const movieData = useMovieData((state) => state.movieData)
   const [loading, setLoading] = useState(false)
-  // console.log(movieData)
-  console.log('page', page)
 
   const observerRef = useCallback(
-    (node) => {
+    (node: HTMLElement | null) => {
       if (!node) return
       const observer = new IntersectionObserver(
         async (entries) => {
           if (entries[0].isIntersecting && !loading) {
-            console.log('실행')
             setLoading(true)
-            console.log('inter', page)
             await fetchMovieData(page + 1)
             setPage((prev) => prev + 1)
             setLoading(false)

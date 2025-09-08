@@ -5,12 +5,7 @@ import { useState } from 'react'
 import { useIsUserLogin } from '@/store'
 
 export default function Login() {
-  const { loginWithGoogle, loginWithNaver, loginWithKakao } = useSupabaseAuth()
-
-  const handleNaverLogin = () => {
-    // 네이버 로그인 처리
-    loginWithNaver()
-  }
+  const { loginWithKakao } = useSupabaseAuth()
 
   const handleKakaoLogin = () => {
     // 카카오 로그인 처리
@@ -18,25 +13,6 @@ export default function Login() {
     setIsLogin(true)
   }
 
-  const handleGoogleLogin = async () => {
-    // 구글 로그인 처리
-    try {
-      const { data, error } = await loginWithGoogle()
-
-      if (error) throw error
-
-      // 로그인 성공 시 처리
-      setIsLogin(true)
-    } catch (error) {
-      console.error('구글 로그인 실패:', error.message)
-    }
-  }
-
-  // useEffect(() => {
-  //   const authorizationCode = searchParams.get("code");
-  //   console.log(authorizationCode);
-  //   getGoogleUserInfo(authorizationCode);
-  // }, []);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -47,7 +23,7 @@ export default function Login() {
   const { login } = useSupabaseAuth()
   const navigate = useNavigate()
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -55,22 +31,34 @@ export default function Login() {
     }))
   }
 
-  const handleEmailLogin = async (e) => {
+  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const { error } = await login({
+      const result = await login({
         email: formData.email,
         password: formData.password,
       })
 
-      if (error) throw error
+      if (!result) {
+        console.error('login 함수가 undefined 반환함')
+        return
+      }
+
+      if ('error' in result && result.error) {
+        console.log('로그인 실패', result.error.message)
+        return
+      }
 
       setIsLogin(true)
 
       await delay(1000)
       navigate('/')
-    } catch (error) {
-      console.error('로그인 실패:', error.message)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('로그인 실패:', error.message)
+      } else {
+        console.error('로그인 실패:', error)
+      }
     }
   }
 
@@ -140,10 +128,7 @@ export default function Login() {
             >
               카카오로 로그인
             </button>
-            <button
-              onClick={handleGoogleLogin}
-              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
-            >
+            <button className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
               구글로 로그인
             </button>
           </div>

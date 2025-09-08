@@ -7,7 +7,6 @@ export default function MovieCard({
   vote_average,
   title,
   popularity,
-  gender,
 }) {
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
@@ -66,9 +65,6 @@ export default function MovieCard({
             <span className="text-blue-600 font-semibold">
               인기도: {Math.round(popularity)}
             </span>
-            {gender && (
-              <span className="text-purple-600 font-semibold">{gender}</span>
-            )}
           </div>
         </div>
       </div>
