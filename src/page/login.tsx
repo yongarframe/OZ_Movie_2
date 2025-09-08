@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSupabaseAuth } from '@/supabase'
 import { delay } from '@/util/delay'
 import { useState } from 'react'
-import { useIsUserLogin } from '@/store'
+import { useIsUserLogin } from '@/store/useIsUserLogin'
 
 export default function Login() {
   const { loginWithKakao } = useSupabaseAuth()
@@ -40,12 +40,10 @@ export default function Login() {
       })
 
       if (!result) {
-        console.error('login 함수가 undefined 반환함')
         return
       }
 
       if ('error' in result && result.error) {
-        console.log('로그인 실패', result.error.message)
         return
       }
 
@@ -53,12 +51,8 @@ export default function Login() {
 
       await delay(1000)
       navigate('/')
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('로그인 실패:', error.message)
-      } else {
-        console.error('로그인 실패:', error)
-      }
+    } catch (_error: unknown) {
+      void 0
     }
   }
 

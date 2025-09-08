@@ -2,26 +2,6 @@ import { create } from 'zustand'
 
 const API = import.meta.env.VITE_API_TOKEN
 
-export const useMovieDetail = create((set) => ({
-  movieDetail: [],
-  fetchMovieDetail: async (id) => {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${API}`,
-      },
-    }
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}?language=ko`,
-      options
-    )
-    const data = await response.json()
-
-    set((state) => ({ ...state, movieDetail: data }))
-  },
-}))
-
 export const useSearchMovie = create((set) => ({
   videoMovie: [],
   fetchVideoMovie: async (params) => {
@@ -59,19 +39,4 @@ export const useVideoMovie = create((set) => ({
 
     set(() => ({ videoMovie: data.results }))
   },
-}))
-
-export const useUserInfo = create((set) => ({
-  userInfo: '',
-  setUserInfo: async (userInfo) => {
-    set(() => ({ userInfo: userInfo }))
-  },
-}))
-
-export const useIsUserLogin = create((set) => ({
-  isLogin: false,
-  setIsLogin: (isLogin) =>
-    set(() => {
-      return { isLogin: !!isLogin }
-    }),
 }))

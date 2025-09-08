@@ -1,28 +1,20 @@
+import { useIsUserLogin } from '@/store/useIsUserLogin'
 import '../App.css'
 import { useSupabaseAuth } from '../supabase'
-import { useIsUserLogin, useUserInfo } from '../store'
+import { useUserInfo } from '@/store/useUserInfo'
 
 function MyPage() {
-  // const [userInfo, setUserInfo] = useState("");
   const { setIsLogin } = useIsUserLogin()
   const { userInfo, setUserInfo } = useUserInfo()
   const { logout } = useSupabaseAuth()
 
-  // useEffect(() => {
-  //   const fetchUserInfo = async () => {
-  //     const userInfo = await getUserInfo();
-  //     setUserInfo(userInfo.user);
-  //   };
-  //   fetchUserInfo();
-  // }, []);
-
   const handleLogout = async () => {
     try {
       await logout()
-      setUserInfo('')
+      setUserInfo(null)
       setIsLogin(false)
-    } catch (error) {
-      console.error('로그아웃 실패:', error.message)
+    } catch (_error: unknown) {
+      void 0
     }
   }
 

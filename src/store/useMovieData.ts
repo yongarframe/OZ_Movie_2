@@ -24,7 +24,6 @@ export const useMovieData = create<MovieDataState>((set) => ({
     )
 
     const data = await response.json()
-    console.log(data)
     set((state) => ({
       ...state,
       movieData: [...state.movieData, ...data.results],

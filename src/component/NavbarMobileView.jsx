@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useSupabaseAuth } from '../supabase'
-import { useIsUserLogin } from '../store'
 import loginIcon from '../assets/loginicon.png'
+import { useIsUserLogin } from '@/store/useIsUserLogin'
 
 export default function NavbarMobileView({
   setSearch,

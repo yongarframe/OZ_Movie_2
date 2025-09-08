@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom'
-import { useMovieDetail, useVideoMovie } from '../store'
+import { useVideoMovie } from '../store'
 import { useEffect, useState } from 'react'
 import SkeletonMovieDetail from '../component/SkeletonMovieDetail'
+import { useMovieDetail } from '@/store/useMovieDetail'
 
 export default function MovieDetail() {
   const { id } = useParams()
@@ -10,11 +11,10 @@ export default function MovieDetail() {
   const [trailerKey, setTrailerKey] = useState(null)
   const { videoMovie, fetchVideoMovie } = useVideoMovie()
   const [hover, setHover] = useState(false)
-  const API = import.meta.env.VITE_API_TOKEN
 
   useEffect(() => {
     setIsLoading(true) // 데이터 받기 전 loading 상태
-    fetchMovieDetail(id)
+    if (id) fetchMovieDetail(id)
   }, [id, fetchMovieDetail])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function MovieDetail() {
     }
   }
 
-  const YT_EMBED = (id) =>
+  const YT_EMBED = (id: number) =>
     `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${id}`
 
   return (

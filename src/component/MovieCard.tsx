@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import type { MovieData } from '@/types/MovieData'
+import type { movieCardData } from '@/types/movieCardData'
 
 export default function MovieCard({
   id,
@@ -7,10 +9,10 @@ export default function MovieCard({
   vote_average,
   title,
   popularity,
-}) {
+}: MovieData) {
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
-  const [trailerKey, setTrailerKey] = useState(null)
+  const [trailerKey, setTrailerKey] = useState<string | null>(null)
 
   const API = import.meta.env.VITE_API_TOKEN
 
@@ -26,16 +28,16 @@ export default function MovieCard({
           },
         }
       )
-      const data = await res.json()
+      const data: movieCardData = await res.json()
       const trailer = data.results.find(
         (v) => v.type === 'Trailer' && v.site === 'YouTube'
       )
-      setTrailerKey(trailer?.key)
+      if (trailer) setTrailerKey(trailer?.key)
     }
     fetchTrailer()
   }, [id])
 
-  const YT_EMBED = (key) =>
+  const YT_EMBED = (key: string | null) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
 
   return (
@@ -71,7 +73,7 @@ export default function MovieCard({
       <iframe
         title="trailer"
         className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
-        src={hover ? YT_EMBED(trailerKey) : null}
+        src={hover ? YT_EMBED(trailerKey) : undefined}
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
       />

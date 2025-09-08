@@ -14,8 +14,7 @@ export const localStorageUtils = () => {
     if (!strItem) return null
     try {
       return JSON.parse(strItem) as UserInfo
-    } catch (e) {
-      console.error('Failed to parse localStorage item:', e)
+    } catch (_e) {
       return null
     }
   }

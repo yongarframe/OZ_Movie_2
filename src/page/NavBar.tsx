@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import useDebounce from '../customHooks/useDebounce'
 import NavbarPcView from '../component/NavbarPcView'
 import NavbarMobileView from '../component/NavbarMobileView'
-import { useUserInfo } from '../store'
+import { useUserInfo } from '@/store/useUserInfo'
 
 export default function NavBar() {
   const navigate = useNavigate()
@@ -39,23 +39,19 @@ export default function NavBar() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  return (
-    <>
-      {isMobile ? (
-        <NavbarMobileView
-          setSearch={setSearch}
-          userInfo={userInfo}
-          useImageUrl={userInfo?.user?.profileImageUrl}
-          setUserInfo={setUserInfo}
-        />
-      ) : (
-        <NavbarPcView
-          setSearch={setSearch}
-          userInfo={userInfo}
-          useImageUrl={userInfo?.user?.profileImageUrl}
-          setUserInfo={setUserInfo}
-        />
-      )}
-    </>
+  return isMobile ? (
+    <NavbarMobileView
+      setSearch={setSearch}
+      userInfo={userInfo}
+      useImageUrl={userInfo?.user?.profileImageUrl}
+      setUserInfo={setUserInfo}
+    />
+  ) : (
+    <NavbarPcView
+      setSearch={setSearch}
+      userInfo={userInfo}
+      useImageUrl={userInfo?.user?.profileImageUrl}
+      setUserInfo={setUserInfo}
+    />
   )
 }

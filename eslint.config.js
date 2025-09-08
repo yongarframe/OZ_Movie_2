@@ -27,7 +27,7 @@ export default tseslint.config(
   // 4. 메인 설정 블록
   {
     // 적용할 파일 확장자 지정
-    files: ['**/*.{js,ts,tsx,jsx'],
+    files: ['**/*.{js,ts,tsx,jsx}'],
 
     // 사용할 플러그인들 등록
     plugins: {
@@ -83,7 +83,7 @@ export default tseslint.config(
       ],
 
       // ===== TypeScript 기본 규칙 =====
-      '@typescript-eslint/no-explicit-any': 'error', // any 타입 사용시 경고만 (에러 아님)
+      '@typescript-eslint/no-explicit-any': 'error', // any 타입 사용시 에러
       '@typescript-eslint/explicit-function-return-type': 'off', // 함수 리턴 타입 명시 강제 안함
       '@typescript-eslint/explicit-module-boundary-types': 'off', // 모듈 경계 타입 명시 강제 안함
 

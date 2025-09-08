@@ -9,9 +9,9 @@ import NotFound from '@/page/NotFound'
 import Search from '@/component/Search'
 import Signup from '@/page/Signup'
 import { useSupabaseAuth } from '@/supabase'
-import { useUserInfo, useIsUserLogin } from '@/store'
 import MovieCardRender from '@/page/MovieCardRender'
-// import Search from "./component/Search";
+import { useUserInfo } from '@/store/useUserInfo'
+import { useIsUserLogin } from '@/store/useIsUserLogin'
 
 function App() {
   const { getUserInfo } = useSupabaseAuth()

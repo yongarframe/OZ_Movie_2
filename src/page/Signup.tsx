@@ -2,6 +2,13 @@ import { useState } from 'react'
 import { useSupabaseAuth } from '../supabase'
 import { useNavigate } from 'react-router-dom'
 
+interface newErrors {
+  email: string | null
+  name: string | null
+  password: string | null
+  confirmPassword: string | null
+}
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     email: '',
@@ -10,12 +17,22 @@ export default function Signup() {
     confirmPassword: '',
   })
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState<newErrors>({
+    email: null,
+    name: null,
+    password: null,
+    confirmPassword: null,
+  })
   const { signUp } = useSupabaseAuth()
   const navigate = useNavigate()
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors: newErrors = {
+      email: null,
+      name: null,
+      password: null,
+      confirmPassword: null,
+    }
 
     // 이메일 검증
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
@@ -52,7 +69,7 @@ export default function Signup() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (validateForm()) {
@@ -65,7 +82,7 @@ export default function Signup() {
     }
   }
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
