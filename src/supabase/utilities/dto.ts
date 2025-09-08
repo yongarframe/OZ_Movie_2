@@ -1,7 +1,26 @@
 import { DTO_TYPE } from './config'
+import type { User, AuthError } from '@supabase/supabase-js'
+
+export type AppUser = {
+  id: string
+  email: string
+  userName: string
+  profileImageUrl?: string
+}
+
+export type UserDto = { user: User | null; error: null }
+export type ErrorDto = { user: null; error: AuthError | null }
+
+export type ChangeFromDtoInput =
+  | { type: 'user'; dto: UserDto }
+  | { type: 'error'; dto: ErrorDto }
+
+export type ChangeFromDtoResult =
+  | { user: AppUser }
+  | { error: { status: number; message: string } }
 
 // User data 매핑용 함수
-export const changeFromDto = ({ type, dto }) => {
+export const changeFromDto = ({ type, dto }: ChangeFromDtoInput) => {
   switch (type) {
     case DTO_TYPE.user: {
       const { user_metadata: userInfo } = dto?.user ?? {}
@@ -39,7 +58,7 @@ export const changeFromDto = ({ type, dto }) => {
 
       return {
         error: {
-          status: rawError.status,
+          status: rawError.status ?? 500,
           message: rawError.message,
         },
       }

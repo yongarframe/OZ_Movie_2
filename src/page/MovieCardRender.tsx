@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import MovieCard from '../component/MovieCard'
 import { useMovieData } from '@/store/useMovieData'
+import type { MovieData } from '@/types/MovieData'
 
-export default function MovieCardRender() {
+export default function MovieCardRender({
+  movieData,
+}: {
+  movieData: MovieData[]
+}) {
   const fetchMovieData = useMovieData((state) => state.fetchMovieData)
   const [page, setPage] = useState(1)
-  const movieData = useMovieData((state) => state.movieData)
+
   const [loading, setLoading] = useState(false)
 
   const observerRef = useCallback(

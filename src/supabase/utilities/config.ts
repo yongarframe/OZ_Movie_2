@@ -1,4 +1,4 @@
-import { supabaseEnv } from './env'
+import { supabaseEnv } from '@/supabase/utilities/env'
 
 // localStorage Key
 export const USER_INFO_KEY = {
@@ -10,4 +10,6 @@ export const USER_INFO_KEY = {
 export const DTO_TYPE = {
   user: 'user',
   error: 'error',
-}
+} as const
+
+export type DTO_TYPE = (typeof DTO_TYPE)[keyof typeof DTO_TYPE]

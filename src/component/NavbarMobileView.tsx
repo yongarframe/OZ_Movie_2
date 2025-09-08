@@ -3,12 +3,18 @@ import { useState } from 'react'
 import { useSupabaseAuth } from '../supabase'
 import loginIcon from '../assets/loginicon.png'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
+import type { UserInfo } from '@/types/userInfo'
 
 export default function NavbarMobileView({
   setSearch,
   userInfo,
   useImageUrl,
   setUserInfo,
+}: {
+  setSearch: React.Dispatch<React.SetStateAction<string>>
+  userInfo: UserInfo | null
+  useImageUrl: string | undefined
+  setUserInfo: (userInfo: UserInfo | null) => void
 }) {
   const navigate = useNavigate()
   const { logout } = useSupabaseAuth()
@@ -19,7 +25,7 @@ export default function NavbarMobileView({
     await logout()
     navigate('/')
     setIsLogin(false)
-    setUserInfo('')
+    setUserInfo(null)
   }
 
   return (

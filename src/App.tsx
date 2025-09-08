@@ -9,9 +9,9 @@ import NotFound from '@/page/NotFound'
 import Search from '@/component/Search'
 import Signup from '@/page/Signup'
 import { useSupabaseAuth } from '@/supabase'
-import MovieCardRender from '@/page/MovieCardRender'
 import { useUserInfo } from '@/store/useUserInfo'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
+import FetchMovie from '@/component/FetchMovie'
 
 function App() {
   const { getUserInfo } = useSupabaseAuth()
@@ -29,7 +29,7 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<MovieCardRender />} />
+        <Route path="/" element={<FetchMovie />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/movie/:id" element={<MovieDetail />} />
