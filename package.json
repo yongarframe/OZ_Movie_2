@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "prepare": "husky",
     "format": "prettier --write .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
@@ -32,6 +34,8 @@
     "globals": "^16.0.0",
     "husky": "^9.1.7",
     "prettier": "^3.6.2",
+    "supabase": "^2.39.2",
+    "typescript": "^5.9.2",
     "vite": "^6.3.5"
   }
 }

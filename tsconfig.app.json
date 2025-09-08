@@ -1,0 +1,73 @@
+{
+  "compilerOptions": {
+    // 빌드 캐시 파일 경로 (증분 빌드 속도 향상용)
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+    // 컴파일 타겟 ECMAScript 버전
+    "target": "ES2022",
+
+    // 클래스 필드를 defineProperty 방식으로 정의
+    "useDefineForClassFields": true,
+
+    // 프로젝트에서 사용할 타입 정의 라이브러리
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    // 모듈 시스템: ESNext (Vite는 ES 모듈 기반이라 적합)
+    "module": "ESNext",
+
+    // 외부 라이브러리 타입 체크 스킵 (속도 ↑)
+    "skipLibCheck": true,
+
+    /* Bundler 모드 관련 옵션 (Vite/Rollup/webpack 같은 번들러 환경에 맞춤) */
+    // 모듈 해석 방식을 번들러 친화적으로 설정
+    "moduleResolution": "bundler",
+
+    // import 시 .ts 확장자까지 허용 (예: import x from "./file.ts")
+    "allowImportingTsExtensions": true,
+
+    // import/export 구문을 그대로 유지 (변환하지 않음)
+    "verbatimModuleSyntax": true,
+
+    // 모듈 감지를 강제로 사용 (ESM 방식 모듈만 허용)
+    "moduleDetection": "force",
+
+    // 타입 체크만 하고 JS 출력 파일은 생성하지 않음
+    "noEmit": true,
+
+    // JSX 변환 방식을 React 17+ new JSX transform 사용
+    "jsx": "react-jsx",
+
+    /* Linting & 안정성 강화 옵션 */
+    // 타입 검사 엄격 모드
+    "strict": true,
+
+    // 사용하지 않는 로컬 변수 있으면 에러
+    "noUnusedLocals": true,
+
+    // 사용하지 않는 함수 파라미터 있으면 에러
+    "noUnusedParameters": true,
+
+    // 타입 지워도 문제없는 문법만 허용 (TS 전용 문법 최소화)
+    "erasableSyntaxOnly": true,
+
+    // switch 문에서 case 빠뜨리면 에러
+    "noFallthroughCasesInSwitch": true,
+
+    // 부작용만 있는 import 문 금지
+    "noUncheckedSideEffectImports": true,
+
+    /* 경로 설정 */
+    // 절대경로 base를 src로 지정
+    "baseUrl": "src",
+
+    "allowJs": true,
+
+    // 경로 별칭 설정 → "@/..." → "src/..."
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+
+  // 타입 검사 포함 대상
+  "include": ["src"]
+}
