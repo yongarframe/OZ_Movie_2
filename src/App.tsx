@@ -12,6 +12,7 @@ import { useSupabaseAuth } from '@/supabase'
 import { useUserInfo } from '@/store/useUserInfo'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import FetchMovie from '@/component/FetchMovie'
+import FavoriteMoviePage from '@/page/FavoriteMoviePage'
 
 function App() {
   const { getUserInfo } = useSupabaseAuth()
@@ -36,6 +37,7 @@ function App() {
         <Route path="/search" element={<Search />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/mypage/favorite" element={<FavoriteMoviePage />} />
       </Route>
     </Routes>
   )

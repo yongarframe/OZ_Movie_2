@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import MovieCard from '../component/MovieCard'
 import { useMovieData } from '@/store/useMovieData'
 import type { MovieData } from '@/types/MovieData'
+import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 
 export default function MovieCardRender({
   movieData,
@@ -10,8 +11,8 @@ export default function MovieCardRender({
 }) {
   const fetchMovieData = useMovieData((state) => state.fetchMovieData)
   const [page, setPage] = useState(1)
-
   const [loading, setLoading] = useState(false)
+  const user = useSupabaseUser()
 
   const observerRef = useCallback(
     (node: HTMLElement | null) => {
@@ -47,7 +48,11 @@ export default function MovieCardRender({
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {movieData.map((movie) => (
-            <MovieCard key={`${movie.id}${movie.title}`} {...movie} />
+            <MovieCard
+              key={`${movie.id}${movie.title}`}
+              {...movie}
+              userId={user?.id}
+            />
           ))}
         </div>
       </div>

@@ -2,11 +2,13 @@ import { useIsUserLogin } from '@/store/useIsUserLogin'
 import '../App.css'
 import { useSupabaseAuth } from '../supabase'
 import { useUserInfo } from '@/store/useUserInfo'
+import { useNavigate } from 'react-router-dom'
 
 function MyPage() {
   const { setIsLogin } = useIsUserLogin()
   const { userInfo, setUserInfo } = useUserInfo()
   const { logout } = useSupabaseAuth()
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
     try {
@@ -48,9 +50,9 @@ function MyPage() {
 
         <h3>활동 내역</h3>
         <ul className="menu-list">
-          <li>작성한 게시글</li>
-          <li>댓글 목록</li>
-          <li>좋아요 목록</li>
+          <li onClick={() => navigate(`/mypage/favorite`)}>
+            영화 즐겨찾기 목록
+          </li>
         </ul>
       </div>
     </div>

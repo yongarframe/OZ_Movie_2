@@ -58,6 +58,14 @@ export default function NavbarPcView({
           )}
           {!!userInfo && (
             <Link
+              to="/mypage/favorite"
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
+            >
+              즐겨찾기
+            </Link>
+          )}
+          {!!userInfo && (
+            <Link
               to="/mypage"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
             >
