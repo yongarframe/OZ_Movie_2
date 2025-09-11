@@ -5,6 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks' // React Hooks 관련 규칙
 import reactRefresh from 'eslint-plugin-react-refresh' // Vite HMR 최적화 규칙
 import prettier from 'eslint-config-prettier' // Prettier와 충돌하는 ESLint 규칙 비활성화
 import globals from 'globals' // 글로벌 변수 정의 (window, document 등)
+import unusedImports from 'eslint-plugin-unused-imports'
 
 export default tseslint.config(
   // 1. 무시할 파일/폴더 설정
@@ -27,13 +28,14 @@ export default tseslint.config(
   // 4. 메인 설정 블록
   {
     // 적용할 파일 확장자 지정
-    files: ['**/*.{js,ts,tsx,jsx}'],
+    files: ['**/*.{ts,tsx,jsx}'],
 
     // 사용할 플러그인들 등록
     plugins: {
       react, // React 컴포넌트 관련
       'react-hooks': reactHooks, // React Hooks 관련
       'react-refresh': reactRefresh, // Vite HMR 관련
+      'unused-imports': unusedImports,
     },
 
     // 언어 및 파싱 설정
@@ -68,6 +70,8 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules, // React Hooks 권장 규칙들
 
       // ===== 기본적인 JavaScript/TypeScript 품질 규칙 =====
+      'unused-imports/no-unused-imports': 'error', // 사용하지 않는 import 있으면 error
+
       'prefer-const': 'warn', // 재할당하지 않는 변수는 const 사용 권장 (경고만)
 
       'no-var': 'error', // var 키워드 사용 금지 (let, const만 사용)

@@ -2,18 +2,17 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import type { movieCardData } from '@/types/movieCardData'
 import { Star } from 'lucide-react'
-import {
-  addFavorite,
-  getFavorites,
-  removeFavorite,
-} from '@/supabase/moviefavorite/favorites'
+import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
-import type { FavoriteMovieData } from '@/types/favoriteMovieData'
+import { useFavorites } from '@/API/useFavorites'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface MovieCardPropsType extends MovieCardRenderData {
   userId: string | undefined
   onToggleFavorite?: () => void
 }
+
+const API = import.meta.env.VITE_API_TOKEN
 
 export default function MovieCard({
   id,
@@ -27,9 +26,11 @@ export default function MovieCard({
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
   const [trailerKey, setTrailerKey] = useState<string | null>(null)
-  const [isFavorite, setIsFavorite] = useState(false)
 
-  const API = import.meta.env.VITE_API_TOKEN
+  const queryClient = useQueryClient()
+  const { data: favorites = [] } = useFavorites(userId)
+
+  const isFavorite = favorites.some((fav) => fav.movie_id === id)
 
   useEffect(() => {
     // 카드 mount 시 한 번만 fetch
@@ -52,18 +53,6 @@ export default function MovieCard({
     fetchTrailer()
   }, [id])
 
-  useEffect(() => {
-    if (!userId) {
-      setIsFavorite(false)
-      return
-    }
-
-    getFavorites(userId).then((data) => {
-      const exists = data.some((fav) => fav.movie_id === id)
-      setIsFavorite(exists)
-    })
-  }, [userId, id])
-
   const YT_EMBED = (key: string | null) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
 
@@ -72,7 +61,6 @@ export default function MovieCard({
     if (!userId) return
     if (isFavorite) {
       await removeFavorite(userId, id)
-      setIsFavorite(false)
     } else {
       await addFavorite({
         userId,
@@ -82,8 +70,8 @@ export default function MovieCard({
         vote_average,
         popularity,
       })
-      setIsFavorite(true)
     }
+    queryClient.invalidateQueries({ queryKey: ['favorites', userId] })
     onToggleFavorite?.()
   }
 
