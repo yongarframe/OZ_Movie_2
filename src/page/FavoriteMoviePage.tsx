@@ -1,21 +1,12 @@
+import { useFavorites } from '@/API/useFavorites'
 import MovieCard from '@/component/MovieCard'
-import { getFavorites } from '@/supabase/moviefavorite/favorites'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
-import type { FavoriteMovieData } from '@/types/favoriteMovieData'
-import { useEffect, useState } from 'react'
 
 export default function FavoriteMoviePage() {
   const user = useSupabaseUser()
-  const [favoriteMovieData, setFavoriteMovieData] = useState<
-    FavoriteMovieData[] | null
-  >(null)
-
-  useEffect(() => {
-    if (!user) return
-    getFavorites(user.id).then((data: FavoriteMovieData[]) => {
-      setFavoriteMovieData(data)
-    })
-  }, [user])
+  const { data: favoriteMovieData = [], toggleFavorite } = useFavorites(
+    user?.id
+  )
 
   return (
     <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen py-8">
@@ -30,12 +21,7 @@ export default function FavoriteMoviePage() {
               title={movie.title}
               popularity={movie.popularity}
               userId={user?.id}
-              onToggleFavorite={() => {
-                setFavoriteMovieData(
-                  (prev) =>
-                    prev?.filter((m) => m.movie_id !== movie.movie_id) || null
-                )
-              }}
+              onToggleFavorite={() => toggleFavorite(movie)}
             />
           ))}
         </div>
