@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { movieCardData } from '@/types/movieCardData'
 import { Star } from 'lucide-react'
 import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
@@ -14,6 +14,8 @@ interface MovieCardPropsType extends MovieCardRenderData {
 
 const API = import.meta.env.VITE_API_TOKEN
 
+const HOVER_DELAY_MS = 500
+
 export default function MovieCard({
   id,
   poster_path,
@@ -26,6 +28,7 @@ export default function MovieCard({
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
   const [trailerKey, setTrailerKey] = useState<string | null>(null)
+  const hoverTimer = useRef<NodeJS.Timeout | null>(null)
 
   const queryClient = useQueryClient()
   const { data: favorites = [] } = useFavorites(userId)
@@ -75,12 +78,27 @@ export default function MovieCard({
     onToggleFavorite?.()
   }
 
+  const handleMouseEnter = () => {
+    // 마우스 진입 시, 0.5초 후에 isHovered를 true로 설정
+    hoverTimer.current = setTimeout(() => {
+      setHover(true)
+    }, HOVER_DELAY_MS)
+  }
+
+  const handleMouseLeave = () => {
+    // 마우스 이탈 시, 타이머를 클리어하고 isHovered를 false로 설정
+    if (hoverTimer.current) {
+      clearTimeout(hoverTimer.current)
+    }
+    setHover(false)
+  }
+
   return (
     <li
       className="list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative"
       onClick={() => navigate(`/movie/${id}`)}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="relative">
@@ -95,7 +113,7 @@ export default function MovieCard({
           </div>
           <iframe
             title="trailer"
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 '}`}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
             src={hover ? YT_EMBED(trailerKey) : undefined}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
