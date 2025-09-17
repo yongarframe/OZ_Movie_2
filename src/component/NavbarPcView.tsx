@@ -1,8 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useSupabaseAuth } from '../supabase'
-import loginIcon from '../assets/loginicon.png'
+import loginIcon from '@/assets/loginicon.png'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
+import mainLogo from '@/assets/main-logo.png'
 
 export default function NavbarPcView({
   setSearch,
@@ -26,62 +27,59 @@ export default function NavbarPcView({
     setUserInfo(null)
   }
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="flex justify-between items-center space-x-4">
+    <nav className="bg-black/90 backdrop-blur-sm border-b border-white/10">
+      <div className="mx-auto max-w-[1200px] px-4 py-4 flex items-center justify-between">
         <button
-          className="text-2xl font-bold cursor-pointer text-blue-600"
+          className="text-white text-2xl font-bold tracking-tight cursor-pointer"
           onClick={() => navigate(`/`)}
         >
-          🎬 OZ무비
+          <img src={mainLogo} className="h-20" />
         </button>
-        <div className="flex items-center space-x-4 gap-4 border-2 border-gray-700 rounded-md p-2 bg-gray-700 ">
-          <input
-            className="text-white bg-gray-700 rounded-md px-3 py-2 w-[200px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            type="text"
-            placeholder="검색"
-            onChange={(e) => setSearch(e.target.value)}
-          />
+
+        <div className="flex-1 hidden md:flex items-center justify-center px-4">
+          <div className="flex items-center gap-3 bg-white rounded-full px-4 py-2 w-full max-w-[600px]">
+            <input
+              className="flex-1 text-black placeholder-black/60 bg-transparent outline-none min-w-[150px]"
+              type="text"
+              placeholder="Search movies......."
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* 오른쪽 메뉴 */}
+        <div className="flex items-center gap-6 flex-shrink-0">
           {!userInfo ? (
-            <Link
-              to="/login"
-              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-            >
-              로그인
+            <Link to="/login" className="text-white hover:opacity-80">
+              Login/Signup
             </Link>
           ) : (
             <button
               onClick={handleLogout}
-              className="text-red-500 hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
+              className="text-white hover:opacity-80 cursor-pointer"
             >
               로그아웃
             </button>
           )}
+
           {!!userInfo && (
-            <Link
-              to="/mypage/favorite"
-              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-            >
+            <Link to="/mypage/favorite" className="text-white hover:opacity-80">
               즐겨찾기
             </Link>
           )}
           {!!userInfo && (
-            <Link
-              to="/mypage"
-              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-            >
+            <Link to="/mypage" className="text-white hover:opacity-80">
               마이페이지
             </Link>
           )}
           {!userInfo && (
-            <Link
-              to="/signup"
-              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 cursor-pointer transition-all duration-300"
-            >
+            <Link to="/signup" className="text-white hover:opacity-80">
               회원가입
             </Link>
           )}
+
           <img
-            className="w-[50px] h-[50px] cursor-pointer rounded-full object-cover"
+            className="w-[40px] h-[40px] cursor-pointer rounded-full object-cover"
             src={useImageUrl ? useImageUrl : loginIcon}
             alt="로그인아이콘썸네일"
           />
