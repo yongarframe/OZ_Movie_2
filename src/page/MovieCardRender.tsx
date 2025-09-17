@@ -81,14 +81,6 @@ export default function MovieCardRender({
               <p className="mt-4 text-white/80 max-w-3xl line-clamp-4">
                 {overview}
               </p>
-              <div className="mt-6 flex items-center gap-4">
-                <button className="bg-[var(--brand-red)] text-white px-6 py-3 rounded-md font-semibold">
-                  Watch Now
-                </button>
-                <button className="border border-white/40 text-white px-6 py-3 rounded-md font-semibold">
-                  Watch Later
-                </button>
-              </div>
             </div>
           </div>
         ))}
@@ -105,23 +97,20 @@ export default function MovieCardRender({
       >
         ›
       </button>
-      <div className="flex justify-center gap-2 mt-2">
+      <div className="flex justify-center gap-5 mt-2">
         {slideMovieData.map((_, index) => (
           <span
             key={index}
-            className={`h-2 w-2 rounded-full ${
+            className={`h-2 w-2 rounded-full cursor-pointer ${
               index === currentImg
                 ? 'bg-amber-300 dark:bg-gray-300'
                 : 'bg-gray-200 dark:bg-gray-500'
             }`}
+            onClick={() => setCurrentImg(index)}
           ></span>
         ))}
       </div>
       <div className="max-w-[1200px] mx-auto px-4 py-10">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl md:text-3xl font-bold">Trending</h2>
-          <button className="text-white/80 hover:text-white">View all</button>
-        </div>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {movieData.map((movie) => (
             <MovieCard

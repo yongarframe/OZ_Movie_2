@@ -4,8 +4,8 @@ import MovieCardRender from '../page/MovieCardRender'
 import { useSearchMovie } from '@/store/useSearchMovie'
 
 export default function Search() {
-  const [searchParms] = useSearchParams()
-  const params = searchParms.get('movie')
+  const [searchParams] = useSearchParams()
+  const params = searchParams.get('movie')
   const { searchMovie, fetchSearchMovie } = useSearchMovie()
 
   useEffect(() => {

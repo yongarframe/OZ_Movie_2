@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import type { movieCardData } from '@/types/movieCardData'
-import { Star } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
 import { useFavorites } from '@/API/useFavorites'
@@ -14,7 +14,7 @@ interface MovieCardPropsType extends MovieCardRenderData {
 
 const API = import.meta.env.VITE_API_TOKEN
 
-const HOVER_DELAY_MS = 500
+const HOVER_DELAY_MS = 300
 
 export default function MovieCard({
   id,
@@ -59,7 +59,7 @@ export default function MovieCard({
   const YT_EMBED = (key: string | null) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
 
-  const toggleFavorite = async (e: React.MouseEvent<SVGSVGElement>) => {
+  const toggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     if (!userId) return
     if (isFavorite) {
@@ -100,17 +100,13 @@ export default function MovieCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="relative">
+      <div className="w-[256px]">
+        <div className="relative overflow-hidden rounded-[10px]">
           <img
-            className="w-full h-[300px] object-cover"
+            className="w-full h-[344px] object-cover"
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt={title}
           />
-
-          <div className="absolute top-2 right-2 bg-yellow-400 text-black font-bold px-2 py-1 z-10 bg-opacity-80 backdrop-blur-sm rounded-full text-sm">
-            ⭐ {vote_average.toFixed(1)}
-          </div>
           <iframe
             title="trailer"
             className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
@@ -118,24 +114,27 @@ export default function MovieCard({
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
           />
-        </div>
-        <div className="p-4 flex justify-between items-center">
-          <div>
-            <h2 className="text-lg font-bold text-gray-800 line-clamp-1 mb-2">
-              {title}
-            </h2>
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-blue-600 font-semibold">
-                인기도: {Math.round(popularity)}
-              </span>
-            </div>
-          </div>
-          <Star
-            className="text-gray-400 hover:text-yellow-500 transition w-5 h-5"
-            fill={isFavorite ? 'currentColor' : 'none'}
-            stroke="currentColor"
+          <button
+            aria-label="toggle favorite"
+            className="absolute right-2 top-2 z-10 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
             onClick={toggleFavorite}
-          />
+          >
+            <Heart
+              className={`h-5 w-5 cursor-pointer z-50 ${
+                isFavorite ? 'text-red-500' : 'text-white/80'
+              }`}
+              fill={isFavorite ? 'currentColor' : 'none'}
+              stroke="currentColor"
+            />
+          </button>
+        </div>
+        <div className="mt-2 flex h-8 items-center justify-between">
+          <h2 className="max-w-[140px] truncate text-base font-medium text-white">
+            {title}
+          </h2>
+          <span className="inline-flex h-8 items-center justify-center rounded-[5px] bg-black/70 px-2 text-sm font-semibold text-yellow-300">
+            ⭐ {vote_average.toFixed(1)}
+          </span>
         </div>
       </div>
     </li>

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { useSupabaseAuth } from '../supabase'
-import loginIcon from '../assets/loginicon.png'
+import loginIcon from '@/assets/loginicon.png'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
+import mainLogo from '@/assets/main-logo.png'
+import { Menu, X } from 'lucide-react'
 
 export default function NavbarMobileView({
   setSearch,
@@ -35,34 +37,26 @@ export default function NavbarMobileView({
           className="text-xl font-bold cursor-pointer text-blue-600"
           onClick={() => navigate(`/`)}
         >
-          🎬 OZ무비
+          <img src={mainLogo} className="h-20" />
         </button>
 
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-white focus:outline-none"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="flex gap-10">
+          <button
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="text-white focus:outline-none cursor-pointer"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d={
-                isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'
-              }
-            />
-          </svg>
-        </button>
-        <img
-          className="w-[50px] h-[50px] cursor-pointer rounded-full object-cover"
-          src={useImageUrl ? useImageUrl : loginIcon}
-          alt="로그인아이콘썸네일"
-        />
+            {isMenuOpen ? (
+              <X className="w-8 h-8 text-white" />
+            ) : (
+              <Menu className="w-8 h-8 text-white" />
+            )}
+          </button>
+          <img
+            className="w-[50px] h-[50px] cursor-pointer rounded-full object-cover"
+            src={useImageUrl ? useImageUrl : loginIcon}
+            alt="로그인아이콘썸네일"
+          />
+        </div>
       </div>
 
       {isMenuOpen && (
@@ -90,18 +84,28 @@ export default function NavbarMobileView({
           )}
           {!!userInfo && (
             <Link
+              to="/mypage/favorite"
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+            >
+              즐겨찾기
+            </Link>
+          )}
+          {!!userInfo && (
+            <Link
               to="/mypage"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
             >
               마이페이지
             </Link>
           )}
-          <Link
-            to="/signup"
-            className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
-          >
-            회원가입
-          </Link>
+          {!userInfo && (
+            <Link
+              to="/signup"
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+            >
+              회원가입
+            </Link>
+          )}
         </div>
       )}
     </nav>

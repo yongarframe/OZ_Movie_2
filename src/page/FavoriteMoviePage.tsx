@@ -9,7 +9,7 @@ export default function FavoriteMoviePage() {
   )
 
   return (
-    <div className="bg-gradient-to-b from-gray-100 to-gray-200 min-h-screen py-8">
+    <div className="bg-black min-h-screen py-8">
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {favoriteMovieData?.map((movie) => (
