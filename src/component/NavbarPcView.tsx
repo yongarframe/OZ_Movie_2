@@ -3,6 +3,7 @@ import { useSupabaseAuth } from '../supabase'
 import loginIcon from '../assets/loginicon.png'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
+import mainLogo from '@/assets/main-logo.png'
 
 export default function NavbarPcView({
   setSearch,
@@ -32,7 +33,7 @@ export default function NavbarPcView({
           className="text-2xl font-bold cursor-pointer text-blue-600"
           onClick={() => navigate(`/`)}
         >
-          🎬 OZ무비
+          <img src={mainLogo} className="h-20" />
         </button>
         <div className="flex items-center space-x-4 gap-4 border-2 border-gray-700 rounded-md p-2 bg-gray-700 ">
           <input
