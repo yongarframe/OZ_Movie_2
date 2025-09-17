@@ -41,7 +41,7 @@ export default function SlideImage({
           <img
             src={`https://image.tmdb.org/t/p/w780${path}`}
             alt="슬라이드 이미지"
-            className="w-full flex-shrink-0 h-[744px] object-cover"
+            className="w-full flex-shrink-0 h-[px] object-cover"
             key={path}
           />
         ))}
