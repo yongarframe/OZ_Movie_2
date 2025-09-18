@@ -120,3 +120,16 @@
 .bounce-x {
   animation: bounceX 1s ease-in-out;
 }
+
+@layer utilities {
+  .mask-left-bottom {
+    -webkit-mask-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%),
+      linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%);
+    -webkit-mask-composite: destination-in;
+    mask-image:
+      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%),
+      linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%);
+    mask-composite: intersect;
+  }
+}

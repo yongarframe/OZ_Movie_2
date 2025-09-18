@@ -43,3 +43,17 @@ export interface MovieDetail {
   vote_average: number
   vote_count: number
 }
+
+export interface Cast {
+  id: number
+  name: string
+  character: string
+  profile_path: string | null
+}
+
+export interface Crew {
+  id: number
+  name: string
+  job: string
+  profile_path: string | null
+}
