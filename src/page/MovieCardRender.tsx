@@ -59,7 +59,7 @@ export default function MovieCardRender({
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black overflow-hidden text-white">
       {/* Hero */}
       <div
         className="flex transition-transform duration-500 ease-in-out"
