@@ -1,14 +1,29 @@
 import { supabaseClient } from '@/supabase/context/supabaseClient'
+import type { CommentType } from '@/types/movieDetail'
 
 export async function fetchComments(postId: string) {
   const { data, error } = await supabaseClient
     .from('comments')
-    .select('*')
+    .select(
+      `
+      id,
+      post_id,
+      user_id,
+      content,
+      created_at,
+      updated_at,
+      profiles:profiles!comments_user_id_fkey (
+        id,
+        username,
+        user_profile_img
+      )
+    `
+    )
     .eq('post_id', postId)
     .order('created_at', { ascending: true })
 
   if (error) throw error
-  return data
+  return data as unknown as CommentType[]
 }
 
 export async function addComment(
@@ -19,10 +34,24 @@ export async function addComment(
   const { data, error } = await supabaseClient
     .from('comments')
     .insert([{ post_id: postId, user_id: userId, content }])
-    .select()
+    .select(
+      `
+      id,
+      post_id,
+      user_id,
+      content,
+      created_at,
+      updated_at,
+      profiles:profiles!comments_user_id_fkey (
+        id,
+        username,
+        user_profile_img
+      )
+    `
+    )
 
   if (error) throw error
-  return data
+  return data as unknown as CommentType[]
 }
 
 export async function updateComment(commentId: number, content: string) {

@@ -9,9 +9,9 @@ import {
 export const useAuth = () => {
   const supabase = useSupabase()
   const {
-    getItemFromLocalStorage,
     removeItemFromLocalStorage,
     setItemToLocalStorage,
+    getItemFromLocalStorage,
   } = localStorageUtils()
 
   // 로그아웃
@@ -21,25 +21,29 @@ export const useAuth = () => {
     return await supabase.auth.signOut()
   }
 
-  // user 정보 가져오기
+  // user 정보 가져오기 - Supabase 세션 API 사용으로 안정화
+
   const getUserInfo = async () => {
     const data = getItemFromLocalStorage(USER_INFO_KEY.sbKey)
     if (data) {
-      const userInfo = changeFromDto({
-        type: data.user ? DTO_TYPE.user : DTO_TYPE.error,
-        dto: data,
-      })
-      if (userInfo?.user) {
-        setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
+      // localStorage에서 가져온 데이터는 이미 처리된 UserInfo 타입이므로 그대로 반환
+      if (data.user) {
+        setItemToLocalStorage(USER_INFO_KEY.customKey, data)
       }
-      return userInfo
+      return data
     } else {
       try {
         const { data, error } = await supabase.auth.getUser()
-        if (error) return
+        if (error) {
+          const userInfo = changeFromDto({
+            type: DTO_TYPE.error,
+            dto: { user: null, error },
+          })
+          return userInfo
+        }
         const userInfo = changeFromDto({
-          type: !error ? DTO_TYPE.user : DTO_TYPE.error,
-          dto: { user: data.user, error },
+          type: DTO_TYPE.user,
+          dto: { user: data.user, error: null },
         })
         if (userInfo?.user) {
           setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
@@ -50,5 +54,39 @@ export const useAuth = () => {
       }
     }
   }
+  // const getUserInfo = async () => {
+  //   try {
+  //     // 최신 세션 우선 확인
+  //     const { data: sessionData, error: sessionError } =
+  //       await supabase.auth.getSession()
+  //     if (!sessionError && sessionData.session?.user) {
+  //       const userInfo = changeFromDto({
+  //         type: DTO_TYPE.user,
+  //         dto: { user: sessionData.session.user, error: null },
+  //       })
+  //       console.log(userInfo)
+  //       setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
+  //       if (userInfo?.user) {
+  //         await ensureProfileForUser(userInfo.user)
+  //       }
+  //       return userInfo
+  //     }
+
+  //     // 세션이 없거나 오류인 경우, getUser로 재시도
+  //     const { data, error } = await supabase.auth.getUser()
+  //     const userInfo = changeFromDto(
+  //       !error
+  //         ? { type: DTO_TYPE.user, dto: { user: data.user, error: null } }
+  //         : { type: DTO_TYPE.error, dto: { user: null, error } }
+  //     )
+  //     if (userInfo?.user) {
+  //       setItemToLocalStorage(USER_INFO_KEY.customKey, userInfo)
+  //       await ensureProfileForUser(userInfo.user)
+  //     }
+  //     return userInfo
+  //   } catch {
+  //     return undefined
+  //   }
+  // }
   return { logout, getUserInfo }
 }

@@ -11,6 +11,7 @@ export const localStorageUtils = () => {
   }
   const getItemFromLocalStorage = (itemKey: string) => {
     const strItem = localStorage.getItem(itemKey)
+
     if (!strItem) return null
     try {
       return JSON.parse(strItem) as UserInfo

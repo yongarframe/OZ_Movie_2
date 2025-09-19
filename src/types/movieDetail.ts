@@ -60,9 +60,14 @@ export interface Crew {
 
 export interface CommentType {
   id: number
-  poster_id: number
+  post_id: string
   user_id: string
   updated_at: string
   created_at: string
   content: string
+  profiles: {
+    id: string
+    username: string | null
+    user_profile_img: string | null
+  }
 }

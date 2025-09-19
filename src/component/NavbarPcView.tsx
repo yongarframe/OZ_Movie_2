@@ -49,7 +49,7 @@ export default function NavbarPcView({
 
         {/* 오른쪽 메뉴 */}
         <div className="flex items-center gap-6 flex-shrink-0">
-          {!userInfo ? (
+          {!userInfo || userInfo.error ? (
             <Link to="/login" className="text-white hover:opacity-80">
               Login/Signup
             </Link>

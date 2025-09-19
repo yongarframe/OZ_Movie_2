@@ -1,7 +1,5 @@
 import type { CommentType } from '@/types/movieDetail'
 import { useState } from 'react'
-import defaultImg from '@/assets/loginicon.png'
-import { useUserInfo } from '@/store/useUserInfo'
 
 export default function Comment({
   comment,
@@ -16,26 +14,24 @@ export default function Comment({
 }) {
   const [isCommentUpdate, setIsCommentUpdate] = useState(false)
   const [editComment, setEditComment] = useState('')
-  const userInfo = useUserInfo((state) => state.userInfo)
-  console.log(userInfo)
   return (
     <div className="flex items-start gap-3 bg-gray-800 rounded-xl p-4 shadow-md">
-      {comment.profiles?.avatar_url ? (
+      {comment.profiles.user_profile_img ? (
         <img
-          src={defaultImg}
-          alt="유저이미지"
+          src={comment.profiles.user_profile_img}
+          alt={`${comment.profiles.username}의 유저 이미지`}
           className="w-10 h-10 rounded-full object-cover"
         />
       ) : (
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-600 text-white font-bold">
-          {comment.profiles?.username?.[0]?.toUpperCase() || 'U'}
+          {comment.profiles.username?.[0]?.toUpperCase() || 'U'}
         </div>
       )}
       {/* 본문 */}
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <span className="text-white font-medium">
-            {/* {comment.profiles?.username || '익명'} */}
+            {comment.profiles?.username || '익명'}
           </span>
           <span className="text-xs text-gray-500">
             {new Date(comment.created_at).toLocaleDateString()}
@@ -63,7 +59,7 @@ export default function Comment({
                     setIsCommentUpdate(true)
                     setEditComment(comment.content)
                   }}
-                  className="px-3 py-1 bg-amber-600 rounded-lg text-white font-medium hover:bg-amber-700 transition"
+                  className="px-3 py-1 bg-amber-600 rounded-lg text-white font-medium hover:bg-amber-700 transition cursor-pointer"
                 >
                   수정
                 </button>
@@ -73,7 +69,7 @@ export default function Comment({
                     setIsCommentUpdate(false)
                     handleUpdate(comment.id, editComment)
                   }}
-                  className="px-3 py-1 bg-green-600 rounded-lg text-white font-medium hover:bg-amber-700 transition"
+                  className="px-3 py-1 bg-green-600 rounded-lg text-white font-medium hover:bg-amber-700 transition cursor-pointer"
                 >
                   수정완료
                 </button>
@@ -81,7 +77,7 @@ export default function Comment({
 
               <button
                 onClick={() => handleDelete(comment.id)}
-                className="px-3 py-1 bg-gray-500 rounded-lg text-white font-medium hover:bg-gray-600 transition"
+                className="px-3 py-1 bg-gray-500 rounded-lg text-white font-medium hover:bg-gray-600 transition cursor-pointer"
               >
                 삭제
               </button>

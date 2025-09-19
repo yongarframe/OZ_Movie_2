@@ -7,10 +7,9 @@ import { useIsUserLogin } from '@/store/useIsUserLogin'
 export default function Login() {
   const { loginWithKakao } = useSupabaseAuth()
 
-  const handleKakaoLogin = () => {
-    // 카카오 로그인 처리
-    loginWithKakao()
-    setIsLogin(true)
+  const handleKakaoLogin = async () => {
+    // 카카오 로그인 처리: 리디렉션 흐름에서는 즉시 로그인 상태를 true로 두지 않음
+    await loginWithKakao(window.location.origin + '/')
   }
 
   const [formData, setFormData] = useState({
@@ -51,8 +50,8 @@ export default function Login() {
 
       await delay(1000)
       navigate('/')
-    } catch (_error: unknown) {
-      void 0
+    } catch {
+      // noop
     }
   }
 
