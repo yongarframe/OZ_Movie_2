@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   fetchComments,
   addComment,
@@ -17,6 +17,8 @@ export default function CommentList({
 }) {
   const [comments, setComments] = useState<CommentType[]>([])
   const [newComment, setNewComment] = useState('')
+  const bottomRef = useRef<HTMLDivElement>(null)
+  const [newCommentAdded, setNewCommentAdded] = useState(false)
 
   useEffect(() => {
     if (!postId) return
@@ -40,6 +42,7 @@ export default function CommentList({
     const data = await addComment(postId, userId, newComment)
     setComments([...comments, ...data])
     setNewComment('')
+    setNewCommentAdded(true)
   }
 
   const handleUpdate = async (id: number, content: string) => {
@@ -51,6 +54,13 @@ export default function CommentList({
     await deleteComment(id)
     setComments(comments.filter((c) => c.id !== id))
   }
+
+  useEffect(() => {
+    if (newCommentAdded) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+      setNewCommentAdded(false)
+    }
+  }, [newCommentAdded])
 
   return (
     <section className="mt-12 px-4 sm:px-8 md:px-20">
@@ -67,14 +77,14 @@ export default function CommentList({
         />
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold transition"
+          className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold transition cursor-pointer"
         >
           작성
         </button>
       </form>
 
       {/* 댓글 리스트 */}
-      <div className="flex flex-col gap-4">
+      <div ref={bottomRef} className="flex flex-col gap-4 pb-60">
         {comments.length === 0 && (
           <p className="text-gray-500">
             리뷰가 없습니다. 첫 리뷰를 남겨보세요!

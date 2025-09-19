@@ -19,7 +19,6 @@ export default function NavbarPcView({
   const navigate = useNavigate()
   const { logout } = useSupabaseAuth()
   const { setIsLogin } = useIsUserLogin()
-
   const handleLogout = async () => {
     await logout()
     navigate('/')
@@ -49,7 +48,7 @@ export default function NavbarPcView({
 
         {/* 오른쪽 메뉴 */}
         <div className="flex items-center gap-6 flex-shrink-0">
-          {!userInfo || userInfo.error ? (
+          {!userInfo || !!userInfo.error ? (
             <Link to="/login" className="text-white hover:opacity-80">
               Login/Signup
             </Link>
@@ -62,17 +61,17 @@ export default function NavbarPcView({
             </button>
           )}
 
-          {!!userInfo && (
+          {!!userInfo?.user && (
             <Link to="/mypage/favorite" className="text-white hover:opacity-80">
               즐겨찾기
             </Link>
           )}
-          {!!userInfo && (
+          {!!userInfo?.user && (
             <Link to="/mypage" className="text-white hover:opacity-80">
               마이페이지
             </Link>
           )}
-          {!userInfo && (
+          {(!userInfo || !!userInfo.error) && (
             <Link to="/signup" className="text-white hover:opacity-80">
               회원가입
             </Link>

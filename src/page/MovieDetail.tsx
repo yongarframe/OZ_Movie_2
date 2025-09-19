@@ -91,10 +91,10 @@ export default function MovieDetail() {
   return (
     <>
       <ScrollToTop />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+      <div className="min-h-screen ">
         {/* 배경 이미지 */}
         <div
-          className="flex justify-end w-full sticky top-0 overflow-hidden z-0"
+          className="flex justify-end w-full sticky top-0 overflow-hidden z-1"
           ref={scrollRef}
           style={{ opacity: opacity }}
         >
@@ -106,7 +106,7 @@ export default function MovieDetail() {
         </div>
 
         {/* 콘텐츠 */}
-        <div className="absolute top-[120px] left-0 z-10 w-full">
+        <div className="absolute top-[112px] left-0 z-0 w-full bg-gradient-to-b from-gray-900 to-gray-800">
           <div className="p-4 sm:p-8 md:px-20 max-w-[875px] mt-[200px] sm:mt-[300px]">
             <h1 className="text-white text-2xl sm:text-3xl font-bold">
               {title}
@@ -196,7 +196,6 @@ export default function MovieDetail() {
           </section>
           <CommentList postId={movieId || ''} userId={user?.id || ''} />
         </div>
-        <div className="h-[600px] sm:h-[1000px]"></div>
       </div>
     </>
   )
