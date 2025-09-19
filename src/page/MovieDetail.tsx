@@ -6,6 +6,7 @@ import { api } from '@/API/mainApi'
 import ScrollToTop from '@/component/ScrollToTop'
 import type { MovieReleaseData } from '@/types/MovieReleaseData'
 import type { Cast, Crew } from '@/types/movieDetail'
+import formatMinute from '@/util/formatMinute'
 
 export default function MovieDetail() {
   const { id: movieId } = useParams()
@@ -31,7 +32,6 @@ export default function MovieDetail() {
       setDirector(directorData || null)
     } catch {
       void 0
-      // console.error('감독/출연진 불러오기 실패:', err)
     }
   }
 
@@ -52,23 +52,19 @@ export default function MovieDetail() {
     fetchMovieRelease()
   }, [])
 
-  // Intersection Observer를 사용하여 스크롤 위치를 감지할 ref
   const scrollRef = useRef(null)
 
-  // 영화 상세 정보를 불러오는 훅
   useEffect(() => {
     setIsLoading(true)
     if (movieId) fetchMovieDetail(movieId)
   }, [movieId, fetchMovieDetail])
 
-  // 영화 상세 정보 로딩 상태 관리
   useEffect(() => {
     if (movieDetail) {
       setIsLoading(false)
     }
   }, [movieDetail])
 
-  // 스크롤 위치를 추적하여 투명도 계산
   const handleScroll = () => {
     const position = window.pageYOffset
     setScrollPosition(position)
@@ -94,43 +90,57 @@ export default function MovieDetail() {
     <>
       <ScrollToTop />
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+        {/* 배경 이미지 */}
         <div
-          className="flex justify-end w-full sticky top-0 overflow-hidden z-0 pl-20"
+          className="flex justify-end w-full sticky top-0 overflow-hidden z-0"
           ref={scrollRef}
           style={{ opacity: opacity }}
         >
           <img
-            className="w-full object-cover transition-opacity duration-300 mask-left-bottom"
+            className="w-full h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-opacity duration-300 mask-left-bottom"
             src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
             alt={title}
           />
         </div>
+
+        {/* 콘텐츠 */}
         <div className="absolute top-[120px] left-0 z-10 w-full">
-          <div className=" p-8 pt-[0px] px-20 max-w-[875px] mt-[300px]">
-            <h1 className="text-white text-3xl font-bold">{title}</h1>
-            <p className="text-gray-400 text-[18px] mt-4">{overview}</p>
-            <div className="text-gray-400 flex gap-4 mt-4">
+          <div className="p-4 sm:p-8 md:px-20 max-w-[875px] mt-[200px] sm:mt-[300px]">
+            <h1 className="text-white text-2xl sm:text-3xl font-bold">
+              {title}
+            </h1>
+            <p className="text-gray-400 text-base sm:text-[18px] mt-4 leading-relaxed">
+              {overview}
+            </p>
+            <div className="text-gray-400 flex flex-wrap gap-2 sm:gap-4 mt-4 items-center">
               <div className="w-[30px] bg-amber-600 text-center rounded-md font-bold text-white">
                 {rating || '-'}
               </div>
               <div>{release_date}</div>
-              <div>{runtime}</div>
+              <div>{formatMinute(runtime)}</div>
             </div>
-            <div className="flex gap-2 text-gray-400 mt-4">{genres}</div>
+            <div className="flex flex-wrap gap-2 text-gray-400 mt-4">
+              {genres}
+            </div>
           </div>
-          <section className="mt-20 px-20">
+
+          {/* 상세정보 섹션 */}
+          <section className="mt-10 sm:mt-20 px-4 sm:px-8 md:px-20">
             <div>
-              <div className="text-2xl text-white pb-4">상세정보</div>
+              <div className="text-xl sm:text-2xl text-white pb-4">
+                상세정보
+              </div>
               <hr className="border text-white mt-3" />
-              <h1 className="text-white text-2xl font-bold mt-3">
+              <h1 className="text-white text-xl sm:text-2xl font-bold mt-3">
                 {movieDetail.title}*
               </h1>
             </div>
-            <div className="flex">
-              <div className="flex flex-col w-[400px] text-white gap-4">
+            <div className="flex flex-col md:flex-row gap-8 mt-6">
+              {/* 왼쪽 정보 */}
+              <div className="flex flex-col w-full md:w-[400px] text-white gap-4">
                 <div className="flex flex-col gap-1">
                   <span>러닝타임:</span>
-                  <span>{runtime}</span>
+                  <span>{formatMinute(runtime)}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span>공개일:</span>
@@ -138,15 +148,17 @@ export default function MovieDetail() {
                 </div>
                 <div className="flex flex-col gap-1">
                   <span>장르:</span>
-                  <span className="flex gap-1">{genres}</span>
+                  <span className="flex flex-wrap gap-1">{genres}</span>
                 </div>
-                <div className="flex flex-col w-[400px] gap-2">
+                <div className="flex flex-col gap-1">
                   <span>관람등급:</span>
                   <span className="w-[30px] bg-amber-600 text-center rounded-md font-bold text-white">
                     {rating || '-'}
                   </span>
                 </div>
               </div>
+
+              {/* 오른쪽 감독/출연 */}
               <div className="flex flex-col text-white gap-4">
                 <div className="flex flex-col gap-1">
                   <span>감독:</span>
@@ -154,17 +166,22 @@ export default function MovieDetail() {
                 </div>
                 <div className="flex flex-col gap-1">
                   <span>출연:</span>
-                  <ul className="flex gap-4 overflow-x-auto">
+                  <ul className="flex gap-4 overflow-x-auto pb-2">
                     {cast.map((actor) => (
-                      <li key={actor.id} className="w-28 text-center">
+                      <li
+                        key={actor.id}
+                        className="w-20 sm:w-28 text-center shrink-0"
+                      >
                         {actor.profile_path && (
                           <img
                             src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
                             alt={actor.name}
-                            className="rounded-lg mb-2"
+                            className="rounded-lg mb-2 w-full"
                           />
                         )}
-                        <p className="text-sm font-medium">{actor.name}</p>
+                        <p className="text-xs sm:text-sm font-medium">
+                          {actor.name}
+                        </p>
                         <p className="text-xs text-gray-500">
                           {actor.character}
                         </p>
@@ -176,7 +193,8 @@ export default function MovieDetail() {
             </div>
           </section>
         </div>
-        <div className="h-[1000px]"></div>
+
+        <div className="h-[600px] sm:h-[1000px]"></div>
       </div>
     </>
   )
