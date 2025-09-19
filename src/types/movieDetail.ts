@@ -57,3 +57,12 @@ export interface Crew {
   job: string
   profile_path: string | null
 }
+
+export interface CommentType {
+  id: number
+  poster_id: number
+  user_id: string
+  updated_at: string
+  created_at: string
+  content: string
+}

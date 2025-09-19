@@ -7,8 +7,11 @@ import ScrollToTop from '@/component/ScrollToTop'
 import type { MovieReleaseData } from '@/types/MovieReleaseData'
 import type { Cast, Crew } from '@/types/movieDetail'
 import formatMinute from '@/util/formatMinute'
+import CommentList from '@/component/CommentList'
+import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 
 export default function MovieDetail() {
+  const user = useSupabaseUser()
   const { id: movieId } = useParams()
   const { movieDetail, fetchMovieDetail } = useMovieDetail()
   const [isLoading, setIsLoading] = useState(true)
@@ -23,7 +26,6 @@ export default function MovieDetail() {
     const { data } = await api.get(`/${movieId}/release_dates`)
     setMovieReleaseData(data)
   }
-
   const fetchCredits = async () => {
     try {
       const { data } = await api.get(`${movieId}/credits?language=ko-KR`)
@@ -127,7 +129,7 @@ export default function MovieDetail() {
           {/* 상세정보 섹션 */}
           <section className="mt-10 sm:mt-20 px-4 sm:px-8 md:px-20">
             <div>
-              <div className="text-xl sm:text-2xl text-white pb-4">
+              <div className="text-xl sm:text-2xl text-white pb-4 font-bold">
                 상세정보
               </div>
               <hr className="border text-white mt-3" />
@@ -192,8 +194,8 @@ export default function MovieDetail() {
               </div>
             </div>
           </section>
+          <CommentList postId={movieId || ''} userId={user?.id || ''} />
         </div>
-
         <div className="h-[600px] sm:h-[1000px]"></div>
       </div>
     </>
