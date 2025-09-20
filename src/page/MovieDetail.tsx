@@ -15,12 +15,13 @@ export default function MovieDetail() {
   const { id: movieId } = useParams()
   const { movieDetail, fetchMovieDetail } = useMovieDetail()
   const [isLoading, setIsLoading] = useState(true)
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const [scrollYPosition, setScrollYPosition] = useState(0)
   const [movieReleaseData, setMovieReleaseData] =
     useState<MovieReleaseData | null>(null)
   const [rating, setRating] = useState('')
   const [cast, setCast] = useState<Cast[]>([])
   const [director, setDirector] = useState<Crew | null>(null)
+  const scrollRef = useRef(null)
 
   const fetchMovieRelease = async () => {
     const { data } = await api.get(`/${movieId}/release_dates`)
@@ -54,8 +55,6 @@ export default function MovieDetail() {
     fetchMovieRelease()
   }, [])
 
-  const scrollRef = useRef(null)
-
   useEffect(() => {
     setIsLoading(true)
     if (movieId) fetchMovieDetail(movieId)
@@ -68,8 +67,8 @@ export default function MovieDetail() {
   }, [movieDetail])
 
   const handleScroll = () => {
-    const position = window.pageYOffset
-    setScrollPosition(position)
+    const currentY = window.pageYOffset
+    setScrollYPosition(currentY)
   }
 
   useEffect(() => {
@@ -79,7 +78,7 @@ export default function MovieDetail() {
     }
   }, [])
 
-  const opacity = Math.max(0.35, 1 - scrollPosition / 200)
+  const opacity = Math.max(0.35, 1 - scrollYPosition / 200)
 
   if (isLoading || !movieDetail || Number(movieId) !== movieDetail.id) {
     return <SkeletonMovieDetail />
@@ -91,7 +90,7 @@ export default function MovieDetail() {
   return (
     <>
       <ScrollToTop />
-      <div className="min-h-screen ">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
         {/* 배경 이미지 */}
         <div
           className="flex justify-end w-full sticky top-0 overflow-hidden z-1"
@@ -106,8 +105,8 @@ export default function MovieDetail() {
         </div>
 
         {/* 콘텐츠 */}
-        <div className="absolute top-[112px] left-0 z-0 w-full bg-gradient-to-b from-gray-900 to-gray-800">
-          <div className="p-4 sm:p-8 md:px-20 max-w-[875px] mt-[200px] sm:mt-[300px]">
+        <div className="relative left-0 z-10 w-full -mt-[80px] sm:-mt-[150px] md:-mt-[300px]">
+          <div className="p-4 sm:p-8 md:px-20 max-w-[875px]">
             <h1 className="text-white text-2xl sm:text-3xl font-bold">
               {title}
             </h1>
@@ -137,7 +136,7 @@ export default function MovieDetail() {
                 {movieDetail.title}*
               </h1>
             </div>
-            <div className="flex flex-col md:flex-row gap-8 mt-6">
+            <div className="flex flex-col-1050 gap-8 mt-6">
               {/* 왼쪽 정보 */}
               <div className="flex flex-col w-full md:w-[400px] text-white gap-4">
                 <div className="flex flex-col gap-1">

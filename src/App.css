@@ -133,3 +133,9 @@
     mask-composite: intersect;
   }
 }
+
+@media (max-width: 1050px) {
+  .flex-col-1050 {
+    flex-direction: column;
+  }
+}

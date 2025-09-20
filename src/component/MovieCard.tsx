@@ -95,7 +95,7 @@ export default function MovieCard({
 
   return (
     <li
-      className="list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative"
+      className="flex justify-center list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative"
       onClick={() => navigate(`/movie/${id}`)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

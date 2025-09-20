@@ -67,7 +67,7 @@ export default function NavbarMobileView({
             placeholder="검색"
             onChange={(e) => setSearch(e.target.value)}
           />
-          {!userInfo ? (
+          {!userInfo?.user ? (
             <Link
               to="/login"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
@@ -82,7 +82,7 @@ export default function NavbarMobileView({
               로그아웃
             </button>
           )}
-          {!!userInfo && (
+          {!!userInfo?.user && (
             <Link
               to="/mypage/favorite"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
@@ -90,7 +90,7 @@ export default function NavbarMobileView({
               즐겨찾기
             </Link>
           )}
-          {!!userInfo && (
+          {!!userInfo?.user && (
             <Link
               to="/mypage"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
@@ -98,7 +98,7 @@ export default function NavbarMobileView({
               마이페이지
             </Link>
           )}
-          {!userInfo && (
+          {!userInfo?.user && (
             <Link
               to="/signup"
               className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
