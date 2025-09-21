@@ -13,6 +13,7 @@ import ShareButtonGroup from '@/component/ShareButtonGroup'
 interface MovieCardPropsType extends MovieCardRenderData {
   userId: string | undefined
   onToggleFavorite?: () => void
+  touchEnabled: boolean
 }
 
 const API = import.meta.env.VITE_API_TOKEN
@@ -27,6 +28,7 @@ export default function MovieCard({
   popularity,
   userId,
   onToggleFavorite,
+  touchEnabled,
 }: MovieCardPropsType) {
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
@@ -142,6 +144,7 @@ export default function MovieCard({
               id={id}
               title={title}
               poster_path={poster_path}
+              touchEnabled={touchEnabled}
             />
           </div>
           <div className="mt-2 flex h-8 items-center justify-between">
