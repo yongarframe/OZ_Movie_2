@@ -27,6 +27,12 @@ function App() {
     fetchUserInfo()
   }, [isLogin]) // 로그인, 로그아웃 시에만 실행
 
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY)
+    }
+  }, [])
+
   return (
     <Routes>
       <Route element={<Layout />}>

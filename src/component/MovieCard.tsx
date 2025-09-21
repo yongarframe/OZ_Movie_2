@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import type { movieCardData } from '@/types/movieCardData'
-import { Heart } from 'lucide-react'
 import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
 import { useFavorites } from '@/API/useFavorites'
 import { useQueryClient } from '@tanstack/react-query'
+import { IoIosShareAlt } from 'react-icons/io'
+import { Heart } from 'lucide-react'
+import CommonModal from '@/component/common/CommonModal'
+import CommonButton from '@/component/common/CommonButton'
+import kakaoShareButton from '@/assets/kakaotalk_sharing_btn_small.png'
 
 interface MovieCardPropsType extends MovieCardRenderData {
   userId: string | undefined
@@ -29,6 +33,10 @@ export default function MovieCard({
   const [hover, setHover] = useState(false)
   const [trailerKey, setTrailerKey] = useState<string | null>(null)
   const hoverTimer = useRef<NodeJS.Timeout | null>(null)
+  const [isShareErrorModalOpen, setIsShareErrorModalOpen] = useState(false)
+  const [shareErrorMessage, setShareErrorMessage] = useState<string | null>(
+    null
+  )
 
   const queryClient = useQueryClient()
   const { data: favorites = [] } = useFavorites(userId)
@@ -93,50 +101,127 @@ export default function MovieCard({
     setHover(false)
   }
 
+  const handleWebShare = async (e: React.MouseEvent<SVGAElement>) => {
+    e.stopPropagation()
+    const url = `/movie/${id}`
+
+    if (navigator.share) {
+      try {
+        await navigator.share({ url })
+      } catch (error) {
+        let message = '공유 중 알 수 없는 오류가 발생했습니다.'
+
+        if (error instanceof Error) {
+          message = error.message
+        }
+
+        setShareErrorMessage(message)
+        setIsShareErrorModalOpen(true)
+      }
+    } else {
+      setShareErrorMessage(
+        '이 브라우저에서는 Web Share 기능이 지원되지 않습니다.'
+      )
+      setIsShareErrorModalOpen(true)
+    }
+  }
+
+  const handleKakaoShare = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    const kakao = window.Kakao
+    if (kakao) {
+      kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title,
+          description: '이 영화 어때요?',
+          imageUrl: `https://image.tmdb.org/t/p/w500${poster_path}`,
+          link: {
+            mobileWebUrl: `/movie/${id}`,
+            webUrl: `/movie/${id}`,
+          },
+        },
+        buttons: [
+          {
+            title: '자세히 보기',
+            link: {
+              mobileWebUrl: `/movie/${id}`,
+              webUrl: `/movie/${id}`,
+            },
+          },
+        ],
+      })
+    }
+  }
+
   return (
-    <li
-      className="flex justify-center list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative"
-      onClick={() => navigate(`/movie/${id}`)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="w-[256px]">
-        <div className="relative overflow-hidden rounded-[10px]">
-          <img
-            className="w-full h-[344px] object-cover"
-            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-            alt={title}
-          />
-          <iframe
-            title="trailer"
-            className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
-            src={hover ? YT_EMBED(trailerKey) : undefined}
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowFullScreen
-          />
-          <button
-            aria-label="toggle favorite"
-            className="absolute right-2 top-2 z-10 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
-            onClick={toggleFavorite}
-          >
-            <Heart
-              className={`h-5 w-5 cursor-pointer z-50 ${
-                isFavorite ? 'text-red-500' : 'text-white/80'
-              }`}
-              fill={isFavorite ? 'currentColor' : 'none'}
-              stroke="currentColor"
+    <>
+      <li
+        className="flex justify-center list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative group"
+        onClick={() => navigate(`/movie/${id}`)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="w-[256px]">
+          <div className="relative overflow-hidden rounded-[10px]">
+            <img
+              className="w-full h-[344px] object-cover"
+              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              alt={title}
             />
+            <iframe
+              title="trailer"
+              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
+              src={hover ? YT_EMBED(trailerKey) : undefined}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+            <button
+              aria-label="toggle favorite"
+              className="absolute right-2 top-2 z-10 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
+              onClick={toggleFavorite}
+            >
+              <Heart
+                className={`h-5 w-5 cursor-pointer z-50 ${
+                  isFavorite ? 'text-red-500' : 'text-white/80'
+                }`}
+                fill={isFavorite ? 'currentColor' : 'none'}
+                stroke="currentColor"
+              />
+            </button>
+          </div>
+          <div className="mt-2 flex h-8 items-center justify-between">
+            <h2 className="max-w-[140px] truncate text-base font-medium text-white">
+              {title}
+            </h2>
+            <span className="inline-flex h-8 items-center justify-center rounded-[5px] bg-black/70 px-2 text-sm font-semibold text-yellow-300">
+              ⭐ {vote_average.toFixed(1)}
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col gap-1 justify-center items-center absolute right-5 top-10 z-50 opacity-0 group-hover:opacity-100">
+          <IoIosShareAlt size={30} onClick={handleWebShare} />
+          <button
+            aria-label={`${title}영화 카카오 공유 버튼`}
+            onClick={handleKakaoShare}
+          >
+            <img src={kakaoShareButton} className="cursor-pointer h-7" />
           </button>
         </div>
-        <div className="mt-2 flex h-8 items-center justify-between">
-          <h2 className="max-w-[140px] truncate text-base font-medium text-white">
-            {title}
-          </h2>
-          <span className="inline-flex h-8 items-center justify-center rounded-[5px] bg-black/70 px-2 text-sm font-semibold text-yellow-300">
-            ⭐ {vote_average.toFixed(1)}
-          </span>
-        </div>
-      </div>
-    </li>
+      </li>
+      <CommonModal
+        className="text-black"
+        title={shareErrorMessage || 'Error'}
+        isOpen={isShareErrorModalOpen}
+        onClose={() => setIsShareErrorModalOpen(false)}
+      >
+        <CommonButton
+          className="bg-black"
+          onClick={() => setIsShareErrorModalOpen(false)}
+        >
+          확인
+        </CommonButton>
+      </CommonModal>
+    </>
   )
 }
