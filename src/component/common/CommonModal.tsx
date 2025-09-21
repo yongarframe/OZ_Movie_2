@@ -43,7 +43,9 @@ export default function CommonModal({
       </button>
       {Icon}
       {/* 타이틀 */}
-      <h2 className="text-center mt-[20px] text-[24px] font-bold">{title}</h2>
+      <h2 className="text-center mt-[20px] text-[15px] sm:text-[24px] font-bold">
+        {title}
+      </h2>
       {subtitle && (
         <div className="mt-[8px] text-center text-[16px] text-[#BDBDBD]">
           {subtitle}

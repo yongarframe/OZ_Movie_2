@@ -5,11 +5,10 @@ import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
 import { useFavorites } from '@/API/useFavorites'
 import { useQueryClient } from '@tanstack/react-query'
-import { IoIosShareAlt } from 'react-icons/io'
 import { Heart } from 'lucide-react'
 import CommonModal from '@/component/common/CommonModal'
 import CommonButton from '@/component/common/CommonButton'
-import kakaoShareButton from '@/assets/kakaotalk_sharing_btn_small.png'
+import ShareButtonGroup from '@/component/ShareButtonGroup'
 
 interface MovieCardPropsType extends MovieCardRenderData {
   userId: string | undefined
@@ -101,59 +100,6 @@ export default function MovieCard({
     setHover(false)
   }
 
-  const handleWebShare = async (e: React.MouseEvent<SVGAElement>) => {
-    e.stopPropagation()
-    const url = `/movie/${id}`
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ url })
-      } catch (error) {
-        let message = '공유 중 알 수 없는 오류가 발생했습니다.'
-
-        if (error instanceof Error) {
-          message = error.message
-        }
-
-        setShareErrorMessage(message)
-        setIsShareErrorModalOpen(true)
-      }
-    } else {
-      setShareErrorMessage(
-        '이 브라우저에서는 Web Share 기능이 지원되지 않습니다.'
-      )
-      setIsShareErrorModalOpen(true)
-    }
-  }
-
-  const handleKakaoShare = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    const kakao = window.Kakao
-    if (kakao) {
-      kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title,
-          description: '이 영화 어때요?',
-          imageUrl: `https://image.tmdb.org/t/p/w500${poster_path}`,
-          link: {
-            mobileWebUrl: `/movie/${id}`,
-            webUrl: `/movie/${id}`,
-          },
-        },
-        buttons: [
-          {
-            title: '자세히 보기',
-            link: {
-              mobileWebUrl: `/movie/${id}`,
-              webUrl: `/movie/${id}`,
-            },
-          },
-        ],
-      })
-    }
-  }
-
   return (
     <>
       <li
@@ -189,6 +135,14 @@ export default function MovieCard({
                 stroke="currentColor"
               />
             </button>
+            <ShareButtonGroup
+              className=""
+              setShareErrorMessage={setShareErrorMessage}
+              setIsShareErrorModalOpen={setIsShareErrorModalOpen}
+              id={id}
+              title={title}
+              poster_path={poster_path}
+            />
           </div>
           <div className="mt-2 flex h-8 items-center justify-between">
             <h2 className="max-w-[140px] truncate text-base font-medium text-white">
@@ -198,15 +152,6 @@ export default function MovieCard({
               ⭐ {vote_average.toFixed(1)}
             </span>
           </div>
-        </div>
-        <div className="flex flex-col gap-1 justify-center items-center absolute right-5 top-10 z-50 opacity-0 group-hover:opacity-100">
-          <IoIosShareAlt size={30} onClick={handleWebShare} />
-          <button
-            aria-label={`${title}영화 카카오 공유 버튼`}
-            onClick={handleKakaoShare}
-          >
-            <img src={kakaoShareButton} className="cursor-pointer h-7" />
-          </button>
         </div>
       </li>
       <CommonModal

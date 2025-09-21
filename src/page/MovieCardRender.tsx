@@ -6,6 +6,16 @@ import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 
 const SLIDE_IMAGE_COUNT = 4
 
+const isTouchDevice = (): boolean => {
+  return (
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0 ||
+    ('msMaxTouchPoints' in navigator &&
+      (navigator as Navigator & { msMaxTouchPoints: number }).msMaxTouchPoints >
+        0)
+  )
+}
+
 export default function MovieCardRender({
   movieData,
 }: {
@@ -17,6 +27,11 @@ export default function MovieCardRender({
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const user = useSupabaseUser()
+  const [touchEnabled, setTouchEnabled] = useState(false)
+
+  useEffect(() => {
+    setTouchEnabled(isTouchDevice()) // 초기 실행
+  }, [])
 
   const observerRef = useCallback(
     (node: HTMLElement | null) => {
@@ -117,6 +132,7 @@ export default function MovieCardRender({
               key={`${movie.id}${movie.title}`}
               {...movie}
               userId={user?.id}
+              touchEnabled={touchEnabled}
             />
           ))}
         </div>

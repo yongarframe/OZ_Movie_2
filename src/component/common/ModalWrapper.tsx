@@ -7,7 +7,7 @@ interface ModalWrapperProps {
 
 const ModalWrapper = ({
   children,
-  width = 'w-[396px]',
+  width = 'w-[200px] sm:w-[396px]',
   className = '',
   ref,
 }: ModalWrapperProps) => {
