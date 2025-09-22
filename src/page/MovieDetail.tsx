@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
-import SkeletonMovieDetail from '../component/SkeletonMovieDetail'
+import SkeletonMovieDetail from '../component/skeletonUI/SkeletonMovieDetail'
 import { useMovieDetail } from '@/store/useMovieDetail'
 import { api } from '@/API/mainApi'
 import ScrollToTop from '@/component/ScrollToTop'
@@ -99,7 +99,7 @@ export default function MovieDetail() {
         >
           <img
             className="w-full h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-opacity duration-300 mask-left-bottom"
-            src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
+            src={`https://image.tmdb.org/t/p/w1280${movieDetail.backdrop_path}`}
             alt={title}
           />
         </div>
