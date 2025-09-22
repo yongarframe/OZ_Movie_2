@@ -99,7 +99,7 @@ export default function MovieDetail() {
         >
           <img
             className="w-full h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-opacity duration-300 mask-left-bottom"
-            src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
+            src={`https://image.tmdb.org/t/p/w1280${movieDetail.backdrop_path}`}
             alt={title}
           />
         </div>

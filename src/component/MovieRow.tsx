@@ -1,5 +1,4 @@
 import { useInView } from 'react-intersection-observer'
-import MovieCardForMovieRow from '@/component/MovieCardForMovieRow'
 import {
   usePopular,
   useNowPlaying,
@@ -7,11 +6,12 @@ import {
   useUpcoming,
 } from '@/store/useMovieCategories'
 import SkeletonMovieRow from '@/component/skeletonUI/SkeletonMovieRow'
+import type { MovieRowsType } from '@/types/MovieRowsType'
+import MovieCard from '@/component/MovieCard'
 
-type MovieRowProps = {
-  title: string
-  category: 'popular' | 'nowPlaying' | 'topRated' | 'upcoming'
-  immediate?: boolean
+interface MovieRowProps extends MovieRowsType {
+  userId: string | undefined
+  touchEnabled: boolean
 }
 
 // 카테고리별 훅 매핑
@@ -26,6 +26,8 @@ export default function MovieRow({
   title,
   category,
   immediate = false,
+  userId,
+  touchEnabled,
 }: MovieRowProps) {
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -45,7 +47,12 @@ export default function MovieRow({
       ) : (
         <div className="flex overflow-x-auto hide-scrollbar space-x-2">
           {movies.map((movie) => (
-            <MovieCardForMovieRow key={movie.id} movie={movie} />
+            <MovieCard
+              key={`${movie.id}${movie.title}`}
+              {...movie}
+              userId={userId}
+              touchEnabled={touchEnabled}
+            />
           ))}
         </div>
       )}

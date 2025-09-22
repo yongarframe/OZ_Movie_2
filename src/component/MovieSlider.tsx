@@ -1,32 +1,36 @@
 import SkeletonSlider from '@/component/skeletonUI/SkeletomSlider'
 import type { MovieData } from '@/types/MovieData'
-import { useState } from 'react'
-
-const SLIDE_IMAGE_COUNT = 4
+import { useEffect, useState } from 'react'
 
 export default function MovieSlider({
   slideMovieData,
 }: {
   slideMovieData: MovieData[]
 }) {
+  const slideLength = slideMovieData.length
   const [currentImg, setCurrentImg] = useState(0)
   const [loaded, setLoaded] = useState<boolean[]>(
-    Array(SLIDE_IMAGE_COUNT).fill(false)
+    Array(slideLength).fill(false)
   )
 
+  useEffect(() => {
+    setLoaded(Array(slideMovieData.length).fill(false))
+  }, [slideMovieData])
+
   const prevSlide = () => {
-    setCurrentImg(currentImg === 0 ? SLIDE_IMAGE_COUNT - 1 : currentImg - 1)
+    setCurrentImg(currentImg === 0 ? slideLength - 1 : currentImg - 1)
   }
   const nextSlide = () => {
-    setCurrentImg(currentImg === SLIDE_IMAGE_COUNT - 1 ? 0 : currentImg + 1)
+    setCurrentImg(currentImg === slideLength - 1 ? 0 : currentImg + 1)
   }
 
   const handleImageLoad = (index: number) => {
-    const newLoaded = [...loaded]
-    newLoaded[index] = true
-    setLoaded(newLoaded)
+    setLoaded((prev) => {
+      const newLoaded = [...prev]
+      newLoaded[index] = true
+      return newLoaded
+    })
   }
-
   if (!slideMovieData.length) return <SkeletonSlider />
 
   return (
@@ -43,11 +47,11 @@ export default function MovieSlider({
             {!loaded[index] && <SkeletonSlider />}
             <img
               className="absolute inset-0 w-full h-full object-cover z-0"
-              src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
+              src={`https://image.tmdb.org/t/p/w1280${backdrop_path}`}
               onLoad={() => handleImageLoad(index)}
             />
             <div className="absolute inset-0 bg-black/30 z-10" />
-            <div className="relative z-10 max-w-[1200px] mx-auto px-4 h-full flex flex-col justify-end pb-5">
+            <div className="relative z-20 max-w-[1200px] mx-auto px-4 h-full flex flex-col justify-end pb-5">
               <h1 className="text-3xl md:text-4xl font-bold max-w-2xl">
                 {title}
               </h1>
