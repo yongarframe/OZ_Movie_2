@@ -1,4 +1,4 @@
-// hooks/useMovieCategories.ts
+// hooks/useMovies.ts
 import { useQuery } from '@tanstack/react-query'
 import {
   fetchNowPlaying,
@@ -6,47 +6,36 @@ import {
   fetchUpcoming,
   fetchPopular,
 } from '@/API/movieService'
-import { type MovieData } from '@/types/MovieData'
+import type { MovieData } from '@/types/MovieData'
 
-export const useMovieCategories = () => {
-  const { data: nowPlaying = [], isLoading: nowPlayingLoading } = useQuery<
-    MovieData[]
-  >({
+export const useNowPlaying = (enabled = true) =>
+  useQuery<MovieData[]>({
     queryKey: ['movies', 'nowPlaying'],
     queryFn: fetchNowPlaying,
-    staleTime: 1000 * 60 * 5, // 5분 캐싱
+    staleTime: 1000 * 60 * 5,
+    enabled,
   })
 
-  const { data: topRated = [], isLoading: topRatedLoading } = useQuery<
-    MovieData[]
-  >({
+export const useTopRated = (enabled = true) =>
+  useQuery<MovieData[]>({
     queryKey: ['movies', 'topRated'],
     queryFn: fetchTopRated,
     staleTime: 1000 * 60 * 5,
+    enabled,
   })
 
-  const { data: upcoming = [], isLoading: upcomingLoading } = useQuery<
-    MovieData[]
-  >({
+export const useUpcoming = (enabled = true) =>
+  useQuery<MovieData[]>({
     queryKey: ['movies', 'upcoming'],
     queryFn: fetchUpcoming,
     staleTime: 1000 * 60 * 5,
+    enabled,
   })
 
-  const { data: popular = [], isLoading: popularLoading } = useQuery<
-    MovieData[]
-  >({
+export const usePopular = (enabled = true) =>
+  useQuery<MovieData[]>({
     queryKey: ['movies', 'popular'],
     queryFn: fetchPopular,
     staleTime: 1000 * 60 * 5,
+    enabled,
   })
-
-  return {
-    nowPlaying,
-    topRated,
-    upcoming,
-    popular,
-    loading:
-      nowPlayingLoading || topRatedLoading || upcomingLoading || popularLoading,
-  }
-}
