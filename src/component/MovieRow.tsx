@@ -5,9 +5,9 @@ import {
   useTopRated,
   useUpcoming,
 } from '@/store/useMovieCategories'
-import SkeletonMovieRow from '@/component/skeletonUI/SkeletonMovieRow'
 import type { MovieRowsType } from '@/types/MovieRowsType'
 import MovieCard from '@/component/MovieCard'
+import SkeletonMovieCard from '@/component/skeletonUI/SkeletonMovieCard'
 
 interface MovieRowProps extends MovieRowsType {
   userId: string | undefined
@@ -37,25 +37,29 @@ export default function MovieRow({
   const shouldFetch = immediate ? true : inView
 
   const { data: movies = [], isLoading } = queryMap[category](shouldFetch)
-
+  const skeletonCount = 20
+  const skeletonsToShow = isLoading
+    ? Math.max(skeletonCount - movies.length, 0)
+    : 0
   return (
     <div className="mb-10 min-h-[250px]" ref={ref}>
       <h2 className="text-xl md:text-2xl font-bold text-white mb-4">{title}</h2>
+      <div className="flex overflow-x-auto hide-scrollbar space-x-2">
+        {/* 이미 들어온 영화 카드 */}
+        {movies.map((movie) => (
+          <MovieCard
+            key={`${movie.id}${movie.title}`}
+            {...movie}
+            userId={userId}
+            touchEnabled={touchEnabled}
+          />
+        ))}
 
-      {isLoading && !movies.length ? (
-        <SkeletonMovieRow />
-      ) : (
-        <div className="flex overflow-x-auto hide-scrollbar space-x-2">
-          {movies.map((movie) => (
-            <MovieCard
-              key={`${movie.id}${movie.title}`}
-              {...movie}
-              userId={userId}
-              touchEnabled={touchEnabled}
-            />
-          ))}
-        </div>
-      )}
+        {/* 아직 로딩 중인 카드 자리 Skeleton */}
+        {Array.from({ length: skeletonsToShow }).map((_, idx) => (
+          <SkeletonMovieCard key={`skeleton-${idx}`} />
+        ))}
+      </div>
     </div>
   )
 }

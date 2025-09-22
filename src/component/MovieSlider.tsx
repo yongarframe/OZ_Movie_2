@@ -1,4 +1,4 @@
-import SkeletonSlider from '@/component/skeletonUI/SkeletomSlider'
+import SkeletonSlider from '@/component/skeletonUI/SkeletonSlider'
 import type { MovieData } from '@/types/MovieData'
 import { useEffect, useState } from 'react'
 

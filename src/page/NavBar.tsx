@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useDebounce from '@/customHooks/useDebounce'
+import useDebounce from '@/hooks/useDebounce'
 import NavbarPcView from '../component/NavbarPcView'
 import NavbarMobileView from '../component/NavbarMobileView'
 import { useUserInfo } from '@/store/useUserInfo'
