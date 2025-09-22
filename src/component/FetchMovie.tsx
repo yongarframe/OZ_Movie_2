@@ -1,14 +1,13 @@
-import { useEffect } from 'react'
 import { useMovieCategories } from '@/store/useMovieCategories'
 import MovieRow from '@/component/MovieRow'
 
 export default function FetchMovie() {
-  const { nowPlaying, topRated, upcoming, popular, fetchCategories } =
+  const { nowPlaying, topRated, upcoming, popular, loading } =
     useMovieCategories()
 
-  useEffect(() => {
-    fetchCategories()
-  }, [fetchCategories])
+  if (loading) {
+    return <div className="text-white">로딩 중...</div>
+  }
 
   return (
     <div className="bg-black min-h-screen px-5 md:px-10 py-10 md:py-20">

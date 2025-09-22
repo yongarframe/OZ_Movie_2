@@ -32,7 +32,7 @@ export default function NavbarPcView({
           className="text-white text-2xl font-bold tracking-tight cursor-pointer"
           onClick={() => navigate(`/`)}
         >
-          <img src={mainLogo} className="h-20" />
+          <img src={mainLogo} alt="mainLogo" className="h-20" />
         </button>
 
         <div className="flex-1 hidden md:flex items-center justify-center px-4">

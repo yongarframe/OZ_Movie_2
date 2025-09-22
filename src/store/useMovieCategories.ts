@@ -1,35 +1,52 @@
-// store/useMovieCategories.ts
-import { create } from 'zustand'
-import { api } from '@/API/mainApi'
+// hooks/useMovieCategories.ts
+import { useQuery } from '@tanstack/react-query'
+import {
+  fetchNowPlaying,
+  fetchTopRated,
+  fetchUpcoming,
+  fetchPopular,
+} from '@/API/movieService'
 import { type MovieData } from '@/types/MovieData'
 
-interface MovieCategoryState {
-  nowPlaying: MovieData[]
-  topRated: MovieData[]
-  upcoming: MovieData[]
-  popular: MovieData[]
-  fetchCategories: () => Promise<void>
+export const useMovieCategories = () => {
+  const { data: nowPlaying = [], isLoading: nowPlayingLoading } = useQuery<
+    MovieData[]
+  >({
+    queryKey: ['movies', 'nowPlaying'],
+    queryFn: fetchNowPlaying,
+    staleTime: 1000 * 60 * 5, // 5분 캐싱
+  })
+
+  const { data: topRated = [], isLoading: topRatedLoading } = useQuery<
+    MovieData[]
+  >({
+    queryKey: ['movies', 'topRated'],
+    queryFn: fetchTopRated,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const { data: upcoming = [], isLoading: upcomingLoading } = useQuery<
+    MovieData[]
+  >({
+    queryKey: ['movies', 'upcoming'],
+    queryFn: fetchUpcoming,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  const { data: popular = [], isLoading: popularLoading } = useQuery<
+    MovieData[]
+  >({
+    queryKey: ['movies', 'popular'],
+    queryFn: fetchPopular,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  return {
+    nowPlaying,
+    topRated,
+    upcoming,
+    popular,
+    loading:
+      nowPlayingLoading || topRatedLoading || upcomingLoading || popularLoading,
+  }
 }
-
-export const useMovieCategories = create<MovieCategoryState>((set) => ({
-  nowPlaying: [],
-  topRated: [],
-  upcoming: [],
-  popular: [],
-  fetchCategories: async () => {
-    const [nowPlayingRes, topRatedRes, upcomingRes, popularRes] =
-      await Promise.all([
-        api.get(`/now_playing?language=ko-KR&page=1`),
-        api.get(`/top_rated?language=ko-KR&page=1`),
-        api.get(`/upcoming?language=ko-KR&page=1`),
-        api.get(`/popular?language=ko-KR&page=1&region=KR`),
-      ])
-
-    set({
-      nowPlaying: nowPlayingRes.data.results,
-      topRated: topRatedRes.data.results,
-      upcoming: upcomingRes.data.results,
-      popular: popularRes.data.results,
-    })
-  },
-}))

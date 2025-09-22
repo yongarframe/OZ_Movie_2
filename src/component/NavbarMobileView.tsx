@@ -37,7 +37,7 @@ export default function NavbarMobileView({
           className="text-xl font-bold cursor-pointer text-blue-600"
           onClick={() => navigate(`/`)}
         >
-          <img src={mainLogo} className="h-20" />
+          <img src={mainLogo} alt="mainLogo" className="h-20" />
         </button>
 
         <div className="flex gap-10">
