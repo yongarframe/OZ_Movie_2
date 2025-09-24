@@ -28,7 +28,9 @@ function App() {
   }, [isLogin]) // 로그인, 로그아웃 시에만 실행
 
   useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
+    const kakao = window.Kakao
+
+    if (kakao && !kakao.isInitialized()) {
       window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY)
     }
   }, [])
