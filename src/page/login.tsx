@@ -5,22 +5,23 @@ import { useState } from 'react'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 
 export default function Login() {
-  const { loginWithKakao } = useSupabaseAuth()
+  const { loginWithKakao, login, loginWithGoogle } = useSupabaseAuth()
+  const { setIsLogin } = useIsUserLogin()
+  const navigate = useNavigate()
 
   const handleKakaoLogin = async () => {
     // 카카오 로그인 처리: 리디렉션 흐름에서는 즉시 로그인 상태를 true로 두지 않음
     await loginWithKakao(window.location.origin + '/')
   }
 
+  const handleGoogleLogin = async () => {
+    loginWithGoogle()
+  }
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   })
-
-  const { setIsLogin } = useIsUserLogin()
-
-  const { login } = useSupabaseAuth()
-  const navigate = useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -121,7 +122,10 @@ export default function Login() {
             >
               카카오로 로그인
             </button>
-            <button className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
+            >
               구글로 로그인
             </button>
           </div>
