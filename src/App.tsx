@@ -29,7 +29,6 @@ function App() {
 
   useEffect(() => {
     const kakao = window.Kakao
-
     if (kakao && !kakao.isInitialized()) {
       window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY)
     }
