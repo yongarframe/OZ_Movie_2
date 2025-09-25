@@ -14,13 +14,16 @@ export default function Comment({
 }) {
   const [isCommentUpdate, setIsCommentUpdate] = useState(false)
   const [editComment, setEditComment] = useState('')
+  const [imgError, setImgError] = useState(false)
+
   return (
     <div className="flex items-start gap-3 bg-gray-800 rounded-xl p-4 shadow-md">
-      {comment.profiles?.user_profile_img ? (
+      {comment.profiles?.user_profile_img && !imgError ? (
         <img
           src={comment.profiles.user_profile_img}
-          alt={`${comment.profiles.username}의 유저 이미지`}
+          alt={`${comment.profiles.username || 'User'}의 유저 이미지`}
           className="w-10 h-10 rounded-full object-cover"
+          onError={() => setImgError(true)}
         />
       ) : (
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-600 text-white font-bold">
