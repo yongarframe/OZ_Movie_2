@@ -16,7 +16,7 @@ export default function Comment({
   const [editComment, setEditComment] = useState('')
   return (
     <div className="flex items-start gap-3 bg-gray-800 rounded-xl p-4 shadow-md">
-      {comment.profiles.user_profile_img ? (
+      {comment.profiles?.user_profile_img ? (
         <img
           src={comment.profiles.user_profile_img}
           alt={`${comment.profiles.username}의 유저 이미지`}
@@ -24,7 +24,7 @@ export default function Comment({
         />
       ) : (
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-600 text-white font-bold">
-          {comment.profiles.username?.[0]?.toUpperCase() || 'U'}
+          {comment.profiles?.username?.[0]?.toUpperCase() || 'U'}
         </div>
       )}
       {/* 본문 */}

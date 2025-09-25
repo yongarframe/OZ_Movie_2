@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import MovieCardRender from '../page/MovieCardRender'
+import MovieCardRender from '@/component/MovieSearchRender'
 import { useSearchMovie } from '@/store/useSearchMovie'
 
 export default function Search() {

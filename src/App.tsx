@@ -1,18 +1,18 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import Login from '@/page/login'
+import Login from '@/page/Login'
 import MyPage from '@/page/mypage'
-import Layout from '@/page/layout'
+import Layout from '@/page/Layout'
 import { useEffect } from 'react'
 import MovieDetail from '@/page/MovieDetail'
 import NotFound from '@/page/NotFound'
-import Search from '@/component/Search'
+import Search from '@/page/Search'
 import Signup from '@/page/Signup'
 import { useSupabaseAuth } from '@/supabase'
 import { useUserInfo } from '@/store/useUserInfo'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
-import FetchMovie from '@/component/FetchMovie'
 import FavoriteMoviePage from '@/page/FavoriteMoviePage'
+import MainPage from '@/page/MainPage'
 
 function App() {
   const { getUserInfo } = useSupabaseAuth()
@@ -37,7 +37,7 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<FetchMovie />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/movie/:id" element={<MovieDetail />} />

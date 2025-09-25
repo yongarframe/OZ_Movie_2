@@ -17,7 +17,7 @@ const isTouchDevice = (): boolean => {
   )
 }
 
-export default function FetchMovie() {
+export default function MainPage() {
   const { data: popular = [] } = usePopular(true) // 즉시 fetch
   const slideMovieData = popular.slice(0, SLIDE_IMAGE_COUNT)
   const user = useSupabaseUser()
