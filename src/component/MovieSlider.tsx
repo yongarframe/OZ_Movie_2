@@ -1,6 +1,7 @@
 import SkeletonSlider from '@/component/skeletonUI/SkeletonSlider'
 import type { MovieData } from '@/types/MovieData'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function MovieSlider({
   slideMovieData,
@@ -12,6 +13,7 @@ export default function MovieSlider({
   const [loaded, setLoaded] = useState<boolean[]>(
     Array(slideLength).fill(false)
   )
+  const navigate = useNavigate()
 
   useEffect(() => {
     setLoaded(Array(slideMovieData.length).fill(false))
@@ -39,10 +41,11 @@ export default function MovieSlider({
         className="flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentImg * 100}%)` }}
       >
-        {slideMovieData.map(({ backdrop_path, title, overview }, index) => (
+        {slideMovieData.map(({ id, backdrop_path, title, overview }, index) => (
           <div
-            className="w-full flex-shrink-0 h-[500px] object-cover relative"
+            className="w-full flex-shrink-0 h-[500px] object-cover relative cursor-pointer"
             key={backdrop_path}
+            onClick={() => navigate(`/movie/${id}`)}
           >
             {!loaded[index] && <SkeletonSlider />}
             <img
