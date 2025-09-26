@@ -92,12 +92,20 @@ export default function ShareButtonGroup({
   }
   return (
     <div className={cn(kakaoButton({ mobile: touchEnabled }), className)}>
-      <IoIosShareAlt size={30} onClick={handleWebShare} />
+      <IoIosShareAlt
+        size={30}
+        onClick={handleWebShare}
+        className="text-white"
+      />
       <button
         aria-label={`${title}영화 카카오 공유 버튼`}
         onClick={handleKakaoShare}
       >
-        <img src={kakaoShareButton} className="cursor-pointer h-7" />
+        <img
+          src={kakaoShareButton}
+          alt={`${title} 카카오 공유 버튼 이미지`}
+          className="cursor-pointer h-7"
+        />
       </button>
     </div>
   )

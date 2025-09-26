@@ -35,7 +35,7 @@ export default function MainPage() {
   }, [])
 
   return (
-    <div className="bg-black min-h-screen px-5 md:px-10 py-10 md:py-20">
+    <div className="bg-black min-h-screen">
       <MovieSlider slideMovieData={slideMovieData} />
       <div className="mt-20 space-y-10">
         {movieRows.map(({ title, category, immediate }) => (

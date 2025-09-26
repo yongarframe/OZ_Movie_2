@@ -114,7 +114,7 @@ export default function MovieCard({
           <div className="relative overflow-hidden rounded-[10px]">
             <img
               className="w-full h-[344px] object-cover"
-              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              src={`https://image.tmdb.org/t/p/w342${poster_path}`}
               alt={title}
             />
             <iframe

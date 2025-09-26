@@ -43,16 +43,22 @@ export default function MovieSlider({
       >
         {slideMovieData.map(({ id, backdrop_path, title, overview }, index) => (
           <div
-            className="w-full flex-shrink-0 h-[500px] object-cover relative cursor-pointer"
+            className="w-full flex-shrink-0 h-[600px] object-cover relative cursor-pointer"
             key={backdrop_path}
             onClick={() => navigate(`/movie/${id}`)}
           >
-            {!loaded[index] && <SkeletonSlider />}
-            <img
-              className="absolute inset-0 w-full h-full object-cover z-0"
-              src={`https://image.tmdb.org/t/p/w1280${backdrop_path}`}
-              onLoad={() => handleImageLoad(index)}
-            />
+            <div className="absolute inset-0">
+              {!loaded[index] && <SkeletonSlider />}
+              <img
+                className="absolute inset-0 w-full h-full object-cover z-0"
+                src={`https://image.tmdb.org/t/p/w1280${backdrop_path}`}
+                alt={`${title}의 슬라이드 이미지`}
+                onLoad={() => handleImageLoad(index)}
+                width={1280}
+                height={600}
+                fetchPriority={index === 0 ? 'high' : 'auto'} // 첫 번째 이미지 우선 fetch(LCP 개선)
+              />
+            </div>
             <div className="absolute inset-0 bg-black/30 z-10" />
             <div className="relative z-20 max-w-[1200px] mx-auto px-4 h-full flex flex-col justify-end pb-5">
               <h1 className="text-3xl md:text-4xl font-bold max-w-2xl">
