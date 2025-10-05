@@ -1,28 +1,22 @@
+import { api } from '@/API/mainApi'
 import type { MovieData } from '@/types/MovieData'
 import { create } from 'zustand'
 
 interface SearchMovieState {
   searchMovie: MovieData[]
-  fetchSearchMovie: (params: string | null) => void
+  fetchSearchMovie: (params: string | null, page?: number) => void
 }
-
-const API = import.meta.env.VITE_API_TOKEN
 
 export const useSearchMovie = create<SearchMovieState>((set) => ({
   searchMovie: [],
-  fetchSearchMovie: async (params) => {
-    const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${API}`,
-      },
-    }
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${params}&include_adult=false&language=ko&page=1`,
-      options
+  fetchSearchMovie: async (params, page = 1) => {
+    const { data } = await api.get(
+      `search/movie?query=${params}&include_adult=false&language=ko&page=${page}`
     )
-    const data = await response.json()
-    set(() => ({ searchMovie: data.results }))
+
+    set((state) => ({
+      searchMovie:
+        page === 1 ? data.results : [...state.searchMovie, ...data.results],
+    }))
   },
 }))

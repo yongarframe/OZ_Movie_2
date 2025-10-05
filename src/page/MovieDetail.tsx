@@ -24,12 +24,12 @@ export default function MovieDetail() {
   const scrollRef = useRef(null)
 
   const fetchMovieRelease = async () => {
-    const { data } = await api.get(`/${movieId}/release_dates`)
+    const { data } = await api.get(`/movie/${movieId}/release_dates`)
     setMovieReleaseData(data)
   }
   const fetchCredits = async () => {
     try {
-      const { data } = await api.get(`${movieId}/credits?language=ko-KR`)
+      const { data } = await api.get(`/movie/${movieId}/credits?language=ko-KR`)
       setCast(data.cast.slice(0, 5)) // 상위 5명만
       const directorData = data.crew.find((c: Crew) => c.job === 'Director')
       setDirector(directorData || null)

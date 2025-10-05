@@ -1,5 +1,6 @@
 import { useFavorites } from '@/API/useFavorites'
 import MovieCard from '@/component/MovieCard'
+import useIsTouchDevice from '@/hooks/useIsTouchDevice'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 
 export default function FavoriteMoviePage() {
@@ -7,6 +8,7 @@ export default function FavoriteMoviePage() {
   const { data: favoriteMovieData = [], toggleFavorite } = useFavorites(
     user?.id
   )
+  const touchEnabled = useIsTouchDevice()
 
   return (
     <div className="bg-black min-h-screen py-8">
@@ -22,6 +24,7 @@ export default function FavoriteMoviePage() {
               popularity={movie.popularity}
               userId={user?.id}
               onToggleFavorite={() => toggleFavorite(movie)}
+              touchEnabled={touchEnabled}
             />
           ))}
         </div>

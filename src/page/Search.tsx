@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
-import MovieCardRender from '@/component/MovieSearchRender'
+import MovieSearchRender from '@/component/MovieSearchRender'
 import { useSearchMovie } from '@/store/useSearchMovie'
 
 export default function Search() {
@@ -12,5 +12,5 @@ export default function Search() {
     fetchSearchMovie(params)
   }, [params])
 
-  return <MovieCardRender movieData={searchMovie} />
+  return <MovieSearchRender searchMovieData={searchMovie} params={params} />
 }

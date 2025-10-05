@@ -11,7 +11,7 @@ export const useMovieData = create<MovieDataState>((set) => ({
   movieData: [],
   fetchMovieData: async (page = 1) => {
     const { data } = await api.get(
-      `/popular?language=ko&page=${page}&region=ko`
+      `/movie/popular?language=ko&page=${page}&region=ko`
     )
 
     set((state) => ({

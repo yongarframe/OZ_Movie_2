@@ -1,36 +1,25 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import MovieCard from '../component/MovieCard'
-import { useMovieData } from '@/store/useMovieData'
 import type { MovieData } from '@/types/MovieData'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
+import useIsTouchDevice from '@/hooks/useIsTouchDevice'
+import { useSearchMovie } from '@/store/useSearchMovie'
 
 const SLIDE_IMAGE_COUNT = 4
 
-const isTouchDevice = (): boolean => {
-  return (
-    'ontouchstart' in window ||
-    navigator.maxTouchPoints > 0 ||
-    ('msMaxTouchPoints' in navigator &&
-      (navigator as Navigator & { msMaxTouchPoints: number }).msMaxTouchPoints >
-        0)
-  )
-}
-
-export default function MovieCardRender({
-  movieData,
+export default function MovieSearchRender({
+  searchMovieData,
+  params,
 }: {
-  movieData: MovieData[]
+  searchMovieData: MovieData[]
+  params: string | null
 }) {
-  const fetchMovieData = useMovieData((state) => state.fetchMovieData)
-  const slideMovieData = movieData.slice(0, SLIDE_IMAGE_COUNT)
+  const fetchSearchMovie = useSearchMovie((state) => state.fetchSearchMovie)
+  const slideMovieData = searchMovieData.slice(0, SLIDE_IMAGE_COUNT)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const user = useSupabaseUser()
-  const [touchEnabled, setTouchEnabled] = useState(false)
-
-  useEffect(() => {
-    setTouchEnabled(isTouchDevice()) // 초기 실행
-  }, [])
+  const touchEnabled = useIsTouchDevice()
 
   const observerRef = useCallback(
     (node: HTMLElement | null) => {
@@ -39,7 +28,7 @@ export default function MovieCardRender({
         async (entries) => {
           if (entries[0].isIntersecting && !loading) {
             setLoading(true)
-            await fetchMovieData(page + 1)
+            await fetchSearchMovie(params, page + 1)
             setPage((prev) => prev + 1)
             setLoading(false)
           }
@@ -55,12 +44,6 @@ export default function MovieCardRender({
     [page, loading]
   )
 
-  useEffect(() => {
-    if (movieData.length === 0) {
-      fetchMovieData(page)
-    }
-  }, [])
-
   if (!Array.isArray(slideMovieData) || slideMovieData.length <= 0) {
     return null
   }
@@ -71,7 +54,7 @@ export default function MovieCardRender({
 
       <div className="max-w-[1200px] mx-auto px-4 py-10">
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {movieData.map((movie) => (
+          {searchMovieData.map((movie) => (
             <MovieCard
               key={`${movie.id}${movie.title}`}
               {...movie}
@@ -81,7 +64,9 @@ export default function MovieCardRender({
           ))}
         </div>
       </div>
-      {movieData.length > 0 && <div ref={observerRef}></div>}
+      {searchMovieData.length > 0 && (
+        <div ref={observerRef} className="h-1"></div>
+      )}
     </div>
   )
 }
