@@ -4,13 +4,16 @@ import loginIcon from '@/assets/loginicon.png'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
 import mainLogo from '@/assets/main-logo.png'
+import useSearchEnter from '@/hooks/useSearchEnter'
 
 export default function NavbarPcView({
+  search,
   setSearch,
   userInfo,
   useImageUrl,
   setUserInfo,
 }: {
+  search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
   useImageUrl: string | undefined
@@ -25,6 +28,14 @@ export default function NavbarPcView({
     setIsLogin(false)
     setUserInfo(null)
   }
+  const handleSearch = () => {
+    if (!search.trim()) return
+    navigate(`/search?movie=${search}`)
+  }
+
+  const { searchEnterKeyDown, handleCompositionStart, handleCompositionEnd } =
+    useSearchEnter(handleSearch)
+
   return (
     <nav className="bg-black/90 backdrop-blur-sm border-b border-white/10">
       <div className="mx-auto max-w-[1200px] px-4 py-4 flex items-center justify-between">
@@ -48,6 +59,9 @@ export default function NavbarPcView({
               type="text"
               placeholder="Search movies......."
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={searchEnterKeyDown}
+              onCompositionStart={handleCompositionStart}
+              onCompositionEnd={handleCompositionEnd}
             />
           </div>
         </div>

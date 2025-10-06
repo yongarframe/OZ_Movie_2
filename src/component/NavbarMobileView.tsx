@@ -6,13 +6,16 @@ import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
 import mainLogo from '@/assets/main-logo.png'
 import { Menu, X } from 'lucide-react'
+import useSearchEnter from '@/hooks/useSearchEnter'
 
 export default function NavbarMobileView({
+  search,
   setSearch,
   userInfo,
   useImageUrl,
   setUserInfo,
 }: {
+  search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
   useImageUrl: string | undefined
@@ -29,6 +32,14 @@ export default function NavbarMobileView({
     setIsLogin(false)
     setUserInfo(null)
   }
+  const handleSearch = (e?: React.MouseEvent | React.FormEvent) => {
+    e?.preventDefault()
+    if (!search.trim()) return
+    navigate(`/search?movie=${search}`)
+  }
+
+  const { searchEnterKeyDown, handleCompositionStart, handleCompositionEnd } =
+    useSearchEnter(handleSearch)
 
   return (
     <nav className="bg-gray-800 p-4">
@@ -61,12 +72,16 @@ export default function NavbarMobileView({
 
       {isMenuOpen && (
         <div className="mt-4 flex flex-col space-y-2">
-          <input
-            className="text-white bg-gray-700 p-2 rounded"
-            type="text"
-            placeholder="검색"
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <form onSubmit={handleSearch}>
+            <input
+              className="text-white bg-gray-700 p-2 rounded"
+              type="text"
+              placeholder="검색"
+              onChange={(e) => setSearch(e.target.value)}
+              onCompositionStart={handleCompositionStart}
+              onCompositionEnd={handleCompositionEnd}
+            />
+          </form>
           {!userInfo?.user ? (
             <Link
               to="/login"

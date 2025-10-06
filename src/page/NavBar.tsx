@@ -29,6 +29,7 @@ export default function NavBar() {
 
   return isMobile ? (
     <NavbarMobileView
+      search={search}
       setSearch={setSearch}
       userInfo={userInfo}
       useImageUrl={userInfo?.user?.profileImageUrl}
@@ -36,6 +37,7 @@ export default function NavBar() {
     />
   ) : (
     <NavbarPcView
+      search={search}
       setSearch={setSearch}
       userInfo={userInfo}
       useImageUrl={userInfo?.user?.profileImageUrl}
