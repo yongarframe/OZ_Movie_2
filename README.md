@@ -59,3 +59,18 @@ npm install
 # 3. 로컬 실행
 npm run dev
 ```
+<br/>
+
+## 환경 변수 
+
+```javascript
+#TMDB
+VITE_API_TOKEN = [TMDB 엑세스 토큰]
+
+#SUPABASE
+VITE_SUPABASE_PROJECT_URL = https://[project ID].supabase.co  #settings > Data API
+VITE_SUPABASE_API_KEY = [SUPABASE_API_KEY]                    #settings > API Keys
+
+#카카오 공유
+VITE_KAKAO_JAVASCRIPT_KEY = [카카오 javascript 키]
+```
