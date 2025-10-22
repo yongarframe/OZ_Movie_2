@@ -63,7 +63,7 @@ npm run dev
 
 ## 환경 변수 
 
-```javascript
+```bash
 #TMDB
 VITE_API_TOKEN = [TMDB 엑세스 토큰]
 
