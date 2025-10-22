@@ -15,7 +15,7 @@ function MyPage() {
       await logout()
       setUserInfo(null)
       setIsLogin(false)
-    } catch (_error: unknown) {
+    } catch {
       void 0
     }
   }

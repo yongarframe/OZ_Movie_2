@@ -14,14 +14,6 @@ interface MovieRowProps extends MovieRowsType {
   touchEnabled: boolean
 }
 
-// 카테고리별 훅 매핑
-const queryMap = {
-  popular: usePopular,
-  nowPlaying: useNowPlaying,
-  topRated: useTopRated,
-  upcoming: useUpcoming,
-}
-
 export default function MovieRow({
   title,
   category,
@@ -36,7 +28,21 @@ export default function MovieRow({
 
   const shouldFetch = immediate ? true : inView
 
-  const { data: movies = [], isLoading } = queryMap[category](shouldFetch)
+  // 모든 훅을 최상위 레벨에서 호출
+  const popular = usePopular(shouldFetch && category === 'popular')
+  const nowPlaying = useNowPlaying(shouldFetch && category === 'nowPlaying')
+  const topRated = useTopRated(shouldFetch && category === 'topRated')
+  const upcoming = useUpcoming(shouldFetch && category === 'upcoming')
+
+  // 카테고리에 따라 사용할 데이터와 로딩 상태 선택
+  const queryMap = {
+    popular,
+    nowPlaying,
+    topRated,
+    upcoming,
+  }
+
+  const { data: movies = [], isLoading } = queryMap[category]
   const skeletonCount = 20
   const skeletonsToShow = isLoading
     ? Math.max(skeletonCount - movies.length, 0)

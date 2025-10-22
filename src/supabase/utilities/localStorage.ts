@@ -15,7 +15,7 @@ export const localStorageUtils = () => {
     if (!strItem) return null
     try {
       return JSON.parse(strItem) as UserInfo
-    } catch (_e) {
+    } catch {
       return null
     }
   }

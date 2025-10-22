@@ -38,7 +38,7 @@ export default function NavbarMobileView({
     navigate(`/search?movie=${search}`)
   }
 
-  const { searchEnterKeyDown, handleCompositionStart, handleCompositionEnd } =
+  const { handleCompositionStart, handleCompositionEnd } =
     useSearchEnter(handleSearch)
 
   return (

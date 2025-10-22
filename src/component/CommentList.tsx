@@ -56,10 +56,12 @@ export default function CommentList({
   }
 
   useEffect(() => {
-    if (newCommentAdded) {
+    if (!newCommentAdded) return
+    const timeout = setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
       setNewCommentAdded(false)
-    }
+    }, 0)
+    return () => clearTimeout(timeout)
   }, [newCommentAdded])
 
   return (

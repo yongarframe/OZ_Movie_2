@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export default function useIsTouchDevice() {
   const isTouchDevice = (): boolean => {
@@ -11,11 +11,7 @@ export default function useIsTouchDevice() {
     )
   }
 
-  const [touchEnabled, setTouchEnabled] = useState(false)
-
-  useEffect(() => {
-    setTouchEnabled(isTouchDevice()) // 초기 실행
-  }, [])
+  const [touchEnabled] = useState(() => isTouchDevice())
 
   return touchEnabled
 }

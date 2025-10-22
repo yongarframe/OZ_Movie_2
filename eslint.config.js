@@ -37,7 +37,8 @@ export default tseslint.config(
       'react-refresh': reactRefresh, // Vite HMR 관련
       'unused-imports': unusedImports,
     },
-
+    //리액트 컴파일러 1.0 (useMemo 및 useCallback 자동 작용)
+    extends: [reactHooks.configs.flat.recommended],
     // 언어 및 파싱 설정
     languageOptions: {
       ecmaVersion: 2023, // 최신 JavaScript 문법 지원

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import SkeletonMovieDetail from '../component/skeletonUI/SkeletonMovieDetail'
 import { useMovieDetail } from '@/store/useMovieDetail'
 import { api } from '@/API/mainApi'
@@ -13,12 +13,10 @@ import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 export default function MovieDetail() {
   const user = useSupabaseUser()
   const { id: movieId } = useParams()
-  const { movieDetail, fetchMovieDetail } = useMovieDetail()
-  const [isLoading, setIsLoading] = useState(true)
+  const { movieDetail, fetchMovieDetail, isLoading } = useMovieDetail()
   const [scrollYPosition, setScrollYPosition] = useState(0)
   const [movieReleaseData, setMovieReleaseData] =
     useState<MovieReleaseData | null>(null)
-  const [rating, setRating] = useState('')
   const [cast, setCast] = useState<Cast[]>([])
   const [director, setDirector] = useState<Crew | null>(null)
   const scrollRef = useRef(null)
@@ -39,32 +37,29 @@ export default function MovieDetail() {
   }
 
   useEffect(() => {
-    fetchCredits()
+    void (async () => {
+      await fetchCredits()
+    })()
   }, [movieId])
 
-  useEffect(() => {
-    if (movieReleaseData) {
-      const krRelease = movieReleaseData.results.find(
-        (r) => r.iso_3166_1 === 'KR'
-      )?.release_dates[0]
-      if (krRelease) setRating(krRelease?.certification)
-    }
-  }, [movieId, movieReleaseData])
+  const krRelease = useMemo(() => {
+    if (!movieReleaseData) return null
+
+    return movieReleaseData.results.find((r) => r.iso_3166_1 === 'KR')
+      ?.release_dates[0]
+  }, [movieReleaseData])
+
+  const rating = krRelease?.certification ?? ''
 
   useEffect(() => {
-    fetchMovieRelease()
+    void (async () => {
+      await fetchMovieRelease()
+    })()
   }, [])
 
   useEffect(() => {
-    setIsLoading(true)
     if (movieId) fetchMovieDetail(movieId)
   }, [movieId, fetchMovieDetail])
-
-  useEffect(() => {
-    if (movieDetail) {
-      setIsLoading(false)
-    }
-  }, [movieDetail])
 
   const handleScroll = () => {
     const currentY = window.pageYOffset

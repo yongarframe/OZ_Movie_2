@@ -26,7 +26,7 @@ export default function useSearchPageInfiniteScroll(params: string | null) {
         if (observer && node) observer.unobserve(node)
       }
     },
-    [page, loading]
+    [page, loading, fetchSearchMovie, params]
   )
   return observerRef
 }
