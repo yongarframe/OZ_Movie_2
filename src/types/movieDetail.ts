@@ -71,3 +71,9 @@ export interface CommentType {
     user_profile_img: string | null
   }
 }
+
+export interface FetchCredits {
+  id: number
+  cast: Cast[]
+  crew: Crew[]
+}

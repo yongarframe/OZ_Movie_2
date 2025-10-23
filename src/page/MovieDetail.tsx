@@ -1,61 +1,20 @@
 import { useParams } from 'react-router-dom'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SkeletonMovieDetail from '../component/skeletonUI/SkeletonMovieDetail'
 import { useMovieDetail } from '@/store/useMovieDetail'
-import { api } from '@/API/mainApi'
 import ScrollToTop from '@/component/ScrollToTop'
-import type { MovieReleaseData } from '@/types/MovieReleaseData'
-import type { Cast, Crew } from '@/types/movieDetail'
 import formatMinute from '@/util/formatMinute'
 import CommentList from '@/component/CommentList'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
+import { useMovieDetailData } from '@/hooks/useMovieDetailData'
 
 export default function MovieDetail() {
   const user = useSupabaseUser()
   const { id: movieId } = useParams()
   const { movieDetail, fetchMovieDetail, isLoading } = useMovieDetail()
   const [scrollYPosition, setScrollYPosition] = useState(0)
-  const [movieReleaseData, setMovieReleaseData] =
-    useState<MovieReleaseData | null>(null)
-  const [cast, setCast] = useState<Cast[]>([])
-  const [director, setDirector] = useState<Crew | null>(null)
   const scrollRef = useRef(null)
-
-  const fetchMovieRelease = async () => {
-    const { data } = await api.get(`/movie/${movieId}/release_dates`)
-    setMovieReleaseData(data)
-  }
-  const fetchCredits = async () => {
-    try {
-      const { data } = await api.get(`/movie/${movieId}/credits?language=ko-KR`)
-      setCast(data.cast.slice(0, 5)) // 상위 5명만
-      const directorData = data.crew.find((c: Crew) => c.job === 'Director')
-      setDirector(directorData || null)
-    } catch {
-      void 0
-    }
-  }
-
-  useEffect(() => {
-    void (async () => {
-      await fetchCredits()
-    })()
-  }, [movieId])
-
-  const krRelease = useMemo(() => {
-    if (!movieReleaseData) return null
-
-    return movieReleaseData.results.find((r) => r.iso_3166_1 === 'KR')
-      ?.release_dates[0]
-  }, [movieReleaseData])
-
-  const rating = krRelease?.certification ?? ''
-
-  useEffect(() => {
-    void (async () => {
-      await fetchMovieRelease()
-    })()
-  }, [])
+  const { cast, director, rating } = useMovieDetailData(movieId)
 
   useEffect(() => {
     if (movieId) fetchMovieDetail(movieId)
