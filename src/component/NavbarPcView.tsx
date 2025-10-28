@@ -29,8 +29,11 @@ export default function NavbarPcView({
     setUserInfo(null)
   }
   const handleSearch = () => {
-    if (!search.trim()) return
-    navigate(`/search?movie=${search}`)
+    if (search.trim() === '') {
+      navigate('/')
+    } else {
+      navigate(`/search?movie=${search}`)
+    }
   }
 
   const { searchEnterKeyDown, handleCompositionStart, handleCompositionEnd } =
@@ -63,6 +66,25 @@ export default function NavbarPcView({
               onCompositionStart={handleCompositionStart}
               onCompositionEnd={handleCompositionEnd}
             />
+            <button
+              onClick={handleSearch}
+              className="text-black cursor-pointer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -70,7 +92,7 @@ export default function NavbarPcView({
         <div className="flex items-center gap-6 flex-shrink-0">
           {!userInfo || !!userInfo.error ? (
             <Link to="/login" className="text-white hover:opacity-80">
-              Login/Signup
+              로그인
             </Link>
           ) : (
             <button
