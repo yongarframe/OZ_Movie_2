@@ -16,14 +16,14 @@ export default function NavbarPcView({
   search,
   setSearch,
   userInfo,
-  useImageUrl,
+  userImageUrl,
   setUserInfo,
   genres,
 }: {
   search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
-  useImageUrl: string | undefined
+  userImageUrl: string | undefined
   setUserInfo: (userInfo: UserInfo | null) => void
   genres: Genre[]
 }) {
@@ -151,7 +151,7 @@ export default function NavbarPcView({
               <button onClick={() => setIsUserMenuOpen((prev) => !prev)}>
                 <img
                   className="w-[40px] h-[40px] cursor-pointer rounded-full object-cover"
-                  src={useImageUrl ? useImageUrl : loginIcon}
+                  src={userImageUrl ? userImageUrl : loginIcon}
                   alt="로그인아이콘썸네일"
                 />
               </button>

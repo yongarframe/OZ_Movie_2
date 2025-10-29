@@ -101,7 +101,6 @@ export default function MovieCard({
     }
     setHover(false)
   }
-
   return (
     <>
       <li

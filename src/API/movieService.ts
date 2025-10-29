@@ -21,9 +21,9 @@ export const fetchPopular = async () => {
   return res.data.results
 }
 
-export const fetchMoviesByGenre = async (genreId: string) => {
-  const res = await api.get(
-    `/discover/movie?language=ko-KR&page=1&with_genres=${genreId}`
-  )
-  return res.data.results
-}
+// export const fetchMoviesByGenre = async (genreId: string) => {
+//   const res = await api.get(
+//     `/discover/movie?language=ko-KR&page=1&with_genres=${genreId}`
+//   )
+//   return res.data.results
+// }

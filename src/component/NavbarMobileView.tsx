@@ -17,14 +17,12 @@ export default function NavbarMobileView({
   search,
   setSearch,
   userInfo,
-  useImageUrl,
   setUserInfo,
   genres,
 }: {
   search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
-  useImageUrl: string | undefined
   setUserInfo: (userInfo: UserInfo | null) => void
   genres: Genre[]
 }) {

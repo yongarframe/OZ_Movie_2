@@ -28,7 +28,6 @@ export default function NavBar() {
       search={search}
       setSearch={setSearch}
       userInfo={userInfo}
-      useImageUrl={userInfo?.user?.profileImageUrl}
       setUserInfo={setUserInfo}
       genres={genres}
     />
@@ -37,7 +36,7 @@ export default function NavBar() {
       search={search}
       setSearch={setSearch}
       userInfo={userInfo}
-      useImageUrl={userInfo?.user?.profileImageUrl}
+      userImageUrl={userInfo?.user?.profileImageUrl}
       setUserInfo={setUserInfo}
       genres={genres}
     />
