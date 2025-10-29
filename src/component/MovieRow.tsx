@@ -8,7 +8,7 @@ import {
 import type { MovieRowsType } from '@/types/MovieRowsType'
 import MovieCard from '@/component/MovieCard'
 import SkeletonMovieCard from '@/component/skeletonUI/SkeletonMovieCard'
-import { useRef, useState } from 'react'
+import useMouseDrag from '@/hooks/useMouseDrag'
 
 interface MovieRowProps extends MovieRowsType {
   userId: string | undefined
@@ -26,6 +26,14 @@ export default function MovieRow({
     triggerOnce: true,
     rootMargin: '0px 0px -200px 0px',
   })
+  const {
+    scrollRef,
+    handleMouseDown,
+    handleMouseLeave,
+    handleMouseMove,
+    handleMouseUp,
+    preventClick,
+  } = useMouseDrag()
 
   const shouldFetch = immediate ? true : inView
 
@@ -44,44 +52,6 @@ export default function MovieRow({
   }
 
   // 드래그 스크롤용
-  const scrollRef = useRef<HTMLUListElement | null>(null)
-  const isDragging = useRef(false)
-  const startX = useRef(0)
-  const scrollLeft = useRef(0)
-  const [dragMoved, setDragMoved] = useState(false)
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLUListElement>) => {
-    if (!scrollRef.current) return
-    isDragging.current = true
-    setDragMoved(false)
-    startX.current = e.pageX - scrollRef.current.offsetLeft
-    scrollLeft.current = scrollRef.current.scrollLeft
-  }
-
-  const handleMouseLeave = () => {
-    isDragging.current = false
-  }
-
-  const handleMouseUp = () => {
-    isDragging.current = false
-  }
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLUListElement>) => {
-    if (!isDragging.current || !scrollRef.current) return
-    e.preventDefault()
-    const x = e.pageX - scrollRef.current.offsetLeft
-    const walk = (x - startX.current) * 1.2
-    if (Math.abs(walk) > 5) setDragMoved(true)
-    scrollRef.current.scrollLeft = scrollLeft.current - walk
-  }
-
-  // ✅ 클릭 무효화 처리 (드래그 시 클릭 방지)
-  const handleClickCapture = (e: React.MouseEvent<HTMLUListElement>) => {
-    if (dragMoved) {
-      e.stopPropagation()
-      e.preventDefault()
-    }
-  }
 
   const { data: movies = [], isLoading } = queryMap[category]
   const skeletonCount = 20
@@ -98,7 +68,6 @@ export default function MovieRow({
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
-        onClickCapture={handleClickCapture}
       >
         {/* 이미 들어온 영화 카드 */}
         {movies.map((movie) => (
@@ -107,7 +76,7 @@ export default function MovieRow({
             {...movie}
             userId={userId}
             touchEnabled={touchEnabled}
-            preventClick={dragMoved} // 드래그 시 클릭방지 플래그
+            preventClick={preventClick} // 드래그 시 클릭방지 플래그
           />
         ))}
 
