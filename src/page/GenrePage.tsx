@@ -22,9 +22,11 @@ export default function GenrePage() {
   }, [genreId])
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">{genre?.name}</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className="container py-8 bg-black max-w-[1200px] mx-auto px-4">
+      {genre?.name && (
+        <h1 className="text-2xl font-bold mb-4 text-white">{genre.name}</h1>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
