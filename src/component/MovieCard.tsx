@@ -14,6 +14,7 @@ interface MovieCardPropsType extends MovieCardRenderData {
   userId?: string | undefined
   onToggleFavorite?: () => void
   touchEnabled?: boolean
+  preventClick?: boolean
 }
 
 const API = import.meta.env.VITE_API_TOKEN
@@ -29,6 +30,7 @@ export default function MovieCard({
   userId,
   onToggleFavorite,
   touchEnabled,
+  preventClick = false, // 드래그 시 클릭방지 플래그
 }: MovieCardPropsType) {
   const navigate = useNavigate()
   const [hover, setHover] = useState(false)
@@ -101,11 +103,17 @@ export default function MovieCard({
     }
     setHover(false)
   }
+
+  const handleClick = () => {
+    if (preventClick) return // 드래그 중이면 클릭 무시
+    navigate(`/movie/${id}`)
+  }
+
   return (
     <>
       <li
         className="flex justify-center list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative group"
-        onClick={() => navigate(`/movie/${id}`)}
+        onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -115,6 +123,7 @@ export default function MovieCard({
               className="w-full h-[344px] object-cover"
               src={`https://image.tmdb.org/t/p/w342${poster_path}`}
               alt={title}
+              draggable={false}
             />
             <iframe
               title="trailer"
@@ -122,6 +131,7 @@ export default function MovieCard({
               src={hover ? YT_EMBED(trailerKey) : undefined}
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
+              draggable={false}
             />
             <button
               aria-label="toggle favorite"
