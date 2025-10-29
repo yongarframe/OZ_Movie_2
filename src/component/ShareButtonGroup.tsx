@@ -10,7 +10,7 @@ interface ShareButtonGroupPropsType {
   title: string
   poster_path: string
   className?: string
-  touchEnabled: boolean
+  touchEnabled?: boolean
 }
 
 const kakaoButton = cva(

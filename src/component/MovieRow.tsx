@@ -48,9 +48,9 @@ export default function MovieRow({
     ? Math.max(skeletonCount - movies.length, 0)
     : 0
   return (
-    <div className="mb-10 min-h-[250px]" ref={ref}>
+    <div className="my-20 min-h-[250px]" ref={ref}>
       <h2 className="text-xl md:text-2xl font-bold text-white mb-4">{title}</h2>
-      <ul className="flex overflow-x-auto hide-scrollbar space-x-2">
+      <ul className="flex overflow-x-auto hide-scrollbar space-x-5">
         {/* 이미 들어온 영화 카드 */}
         {movies.map((movie) => (
           <MovieCard

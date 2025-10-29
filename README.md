@@ -59,9 +59,10 @@ npm install
 # 3. 로컬 실행
 npm run dev
 ```
+
 <br/>
 
-## 환경 변수 
+## 환경 변수
 
 ```bash
 #TMDB

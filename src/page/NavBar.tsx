@@ -1,22 +1,18 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import useDebounce from '@/hooks/useDebounce'
 import NavbarPcView from '../component/NavbarPcView'
 import NavbarMobileView from '../component/NavbarMobileView'
 import { useUserInfo } from '@/store/useUserInfo'
+import { useMovieGenres } from '@/store/useMovieGenres'
 
 export default function NavBar() {
-  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-  const debounceValue = useDebounce(search, 1000)
   const { userInfo, setUserInfo } = useUserInfo()
+  const { genres, fetchGenres } = useMovieGenres()
 
   useEffect(() => {
-    if (debounceValue) {
-      navigate(`/search?movie=${debounceValue}`)
-    }
-  }, [debounceValue])
+    fetchGenres()
+  }, [fetchGenres])
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,6 +30,7 @@ export default function NavBar() {
       userInfo={userInfo}
       useImageUrl={userInfo?.user?.profileImageUrl}
       setUserInfo={setUserInfo}
+      genres={genres}
     />
   ) : (
     <NavbarPcView
@@ -42,6 +39,7 @@ export default function NavBar() {
       userInfo={userInfo}
       useImageUrl={userInfo?.user?.profileImageUrl}
       setUserInfo={setUserInfo}
+      genres={genres}
     />
   )
 }

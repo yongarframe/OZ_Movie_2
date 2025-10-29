@@ -11,9 +11,9 @@ import CommonButton from '@/component/common/CommonButton'
 import ShareButtonGroup from '@/component/ShareButtonGroup'
 
 interface MovieCardPropsType extends MovieCardRenderData {
-  userId: string | undefined
+  userId?: string | undefined
   onToggleFavorite?: () => void
-  touchEnabled: boolean
+  touchEnabled?: boolean
 }
 
 const API = import.meta.env.VITE_API_TOKEN
