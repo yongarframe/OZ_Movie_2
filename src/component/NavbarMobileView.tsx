@@ -8,23 +8,31 @@ import mainLogo from '@/assets/main-logo.png'
 import { Menu, X } from 'lucide-react'
 import useSearchEnter from '@/hooks/useSearchEnter'
 
+interface Genre {
+  id: number
+  name: string
+}
+
 export default function NavbarMobileView({
   search,
   setSearch,
   userInfo,
   useImageUrl,
   setUserInfo,
+  genres,
 }: {
   search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
   useImageUrl: string | undefined
   setUserInfo: (userInfo: UserInfo | null) => void
+  genres: Genre[]
 }) {
   const navigate = useNavigate()
   const { logout } = useSupabaseAuth()
   const { setIsLogin } = useIsUserLogin()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isGenresOpen, setIsGenresOpen] = useState(false)
 
   const handleLogout = async () => {
     await logout()
@@ -101,6 +109,27 @@ export default function NavbarMobileView({
               </svg>
             </button>
           </form>
+          <div className="relative">
+            <button
+              onClick={() => setIsGenresOpen((prev) => !prev)}
+              className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 w-full text-left"
+            >
+              장르별
+            </button>
+            {isGenresOpen && (
+              <div className="mt-2 flex flex-col space-y-2">
+                {genres.map((genre) => (
+                  <Link
+                    key={genre.id}
+                    to={`/genre/${genre.id}`}
+                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-600"
+                  >
+                    {genre.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           {!userInfo?.user ? (
             <Link
               to="/login"

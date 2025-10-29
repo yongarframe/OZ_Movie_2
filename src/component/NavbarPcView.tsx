@@ -5,6 +5,12 @@ import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
 import mainLogo from '@/assets/main-logo.png'
 import useSearchEnter from '@/hooks/useSearchEnter'
+import { useState } from 'react'
+
+interface Genre {
+  id: number
+  name: string
+}
 
 export default function NavbarPcView({
   search,
@@ -12,16 +18,20 @@ export default function NavbarPcView({
   userInfo,
   useImageUrl,
   setUserInfo,
+  genres,
 }: {
   search: string
   setSearch: React.Dispatch<React.SetStateAction<string>>
   userInfo: UserInfo | null
   useImageUrl: string | undefined
   setUserInfo: (userInfo: UserInfo | null) => void
+  genres: Genre[]
 }) {
   const navigate = useNavigate()
   const { logout } = useSupabaseAuth()
   const { setIsLogin } = useIsUserLogin()
+  const [isGenresOpen, setIsGenresOpen] = useState(false)
+
   const handleLogout = async () => {
     await logout()
     navigate('/')
@@ -54,6 +64,30 @@ export default function NavbarPcView({
             height={80}
           />
         </button>
+
+        <div className="flex items-center gap-6">
+          <div className="relative">
+            <button
+              onClick={() => setIsGenresOpen((prev) => !prev)}
+              className="text-white hover:opacity-80 cursor-pointer"
+            >
+              장르별
+            </button>
+            {isGenresOpen && (
+              <div className="absolute top-8 left-0 bg-black/90 border border-white/10 rounded-md py-2 w-32">
+                {genres.map((genre) => (
+                  <Link
+                    key={genre.id}
+                    to={`/genre/${genre.id}`}
+                    className="block px-4 py-2 text-white hover:bg-gray-700"
+                  >
+                    {genre.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="flex-1 hidden md:flex items-center justify-center px-4">
           <div className="flex items-center gap-3 bg-white rounded-full px-4 py-2 w-full max-w-[600px]">
