@@ -14,7 +14,7 @@ interface ShareButtonGroupPropsType {
 }
 
 const kakaoButton = cva(
-  'flex flex-col justify-center items-center absolute z-50',
+  'flex flex-col justify-center items-center absolute z-30',
   {
     variants: {
       mobile: {

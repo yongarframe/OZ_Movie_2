@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSupabaseAuth } from '../supabase'
 import { useIsUserLogin } from '@/store/useIsUserLogin'
 import type { UserInfo } from '@/types/userInfo'
 import mainLogo from '@/assets/main-logo.png'
-import { Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 import useSearchEnter from '@/hooks/useSearchEnter'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -51,25 +51,36 @@ export default function NavbarMobileView({
   const { handleCompositionStart, handleCompositionEnd } =
     useSearchEnter(handleSearch)
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMenuOpen])
+
   return (
-    <nav className="bg-gray-800 p-4 fixed top-0 left-0 right-0 z-50">
-      <div className="flex justify-between items-center">
+    <nav className="fixed top-0 left-0 right-0 z-50 p-4 bg-gray-800">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
-            className="text-xl font-bold cursor-pointer text-blue-600 flex items-center gap-4"
+            className="flex items-center gap-4 text-xl font-bold text-blue-600 cursor-pointer"
             onClick={() => navigate(`/`)}
           >
             <img src={mainLogo} alt="mainLogo" className="h-12" />
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text">
+            <span className="text-3xl font-bold text-transparent bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text">
               필름잇다
             </span>
           </button>
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <button
             onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="text-white focus:outline-none cursor-pointer z-50"
+            className="text-white cursor-pointer z-60 focus:outline-none"
           >
             {isMenuOpen ? (
               <X className="w-8 h-8 text-white" />
@@ -87,7 +98,7 @@ export default function NavbarMobileView({
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black z-40"
+              className="fixed inset-0 z-50 bg-black"
               onClick={() => setIsMenuOpen(false)}
             />
             <motion.div
@@ -95,15 +106,15 @@ export default function NavbarMobileView({
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-64 bg-gray-800 z-50 p-4 pt-20"
+              className="fixed top-0 right-0 z-50 w-64 h-full p-4 pt-20 bg-gray-800"
             >
-              <div className="mt-4 flex flex-col space-y-2">
+              <div className="flex flex-col mt-4 space-y-2">
                 <form
                   onSubmit={handleSearch}
                   className="flex items-center gap-2"
                 >
                   <input
-                    className="text-white bg-gray-700 p-2 rounded flex-1"
+                    className="flex-1 p-2 text-white bg-gray-700 rounded"
                     type="text"
                     placeholder="검색"
                     onChange={(e) => setSearch(e.target.value)}
@@ -112,11 +123,11 @@ export default function NavbarMobileView({
                   />
                   <button
                     type="submit"
-                    className="text-white p-2 cursor-pointer"
+                    className="p-2 text-white cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
+                      className="w-6 h-6"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -133,30 +144,45 @@ export default function NavbarMobileView({
                 <div className="relative">
                   <button
                     onClick={() => setIsGenresOpen((prev) => !prev)}
-                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 w-full text-left"
+                    className="flex items-center justify-between w-full px-3 py-2 text-left text-white transition-colors bg-gray-700 rounded-md cursor-pointer hover:bg-gray-600"
                   >
-                    장르별
+                    <span>장르별</span>
+                    <motion.div
+                      animate={{ rotate: isGenresOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown className="w-5 h-5" />
+                    </motion.div>
                   </button>
-                  {isGenresOpen && (
-                    <div className="mt-2 flex flex-col space-y-2">
-                      {genres.map((genre) => (
-                        <Link
-                          key={genre.id}
-                          to={`/genre/${genre.id}`}
-                          onClick={() => setIsMenuOpen(false)}
-                          className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-600"
-                        >
-                          {genre.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {isGenresOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-2 overflow-y-auto origin-top-right bg-gray-600 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none max-h-48 hide-scrollbar"
+                      >
+                        <div className="py-1">
+                          {genres.map((genre) => (
+                            <Link
+                              key={genre.id}
+                              to={`/genre/${genre.id}`}
+                              onClick={() => setIsMenuOpen(false)}
+                              className="block px-4 py-2 text-gray-300 text-m hover:bg-gray-600 hover:text-white"
+                            >
+                              {genre.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
                 {!userInfo?.user ? (
                   <Link
                     to="/login"
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+                    className="px-3 py-2 text-white bg-gray-700 rounded-md hover:text-gray-300"
                   >
                     로그인
                   </Link>
@@ -166,7 +192,7 @@ export default function NavbarMobileView({
                       handleLogout()
                       setIsMenuOpen(false)
                     }}
-                    className="text-red-500 hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700 text-left"
+                    className="px-3 py-2 text-left text-red-500 bg-gray-700 rounded-md hover:text-gray-300"
                   >
                     로그아웃
                   </button>
@@ -175,7 +201,7 @@ export default function NavbarMobileView({
                   <Link
                     to="/mypage/favorite"
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+                    className="px-3 py-2 text-white bg-gray-700 rounded-md hover:text-gray-300"
                   >
                     즐겨찾기
                   </Link>
@@ -184,7 +210,7 @@ export default function NavbarMobileView({
                   <Link
                     to="/mypage"
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+                    className="px-3 py-2 text-white bg-gray-700 rounded-md hover:text-gray-300"
                   >
                     마이페이지
                   </Link>
@@ -193,7 +219,7 @@ export default function NavbarMobileView({
                   <Link
                     to="/signup"
                     onClick={() => setIsMenuOpen(false)}
-                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md bg-gray-700"
+                    className="px-3 py-2 text-white bg-gray-700 rounded-md hover:text-gray-300"
                   >
                     회원가입
                   </Link>

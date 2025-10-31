@@ -112,7 +112,7 @@ export default function MovieCard({
   return (
     <>
       <li
-        className="flex justify-center list-none transform hover:-translate-y-2 transition-all duration-300 cursor-pointer relative group"
+        className="relative flex justify-center list-none transition-all duration-300 transform cursor-pointer hover:-translate-y-2 group"
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -135,11 +135,11 @@ export default function MovieCard({
             />
             <button
               aria-label="toggle favorite"
-              className="absolute right-2 top-2 z-10 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
+              className="absolute right-2 top-2 z-30 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
               onClick={toggleFavorite}
             >
               <Heart
-                className={`h-5 w-5 cursor-pointer z-50 ${
+                className={`h-5 w-5 cursor-pointer z-30 ${
                   isFavorite ? 'text-red-500' : 'text-white/80'
                 }`}
                 fill={isFavorite ? 'currentColor' : 'none'}
@@ -156,7 +156,7 @@ export default function MovieCard({
               touchEnabled={touchEnabled}
             />
           </div>
-          <div className="mt-2 flex h-8 items-center justify-between">
+          <div className="flex items-center justify-between h-8 mt-2">
             <h2 className="max-w-[140px] truncate text-base font-medium text-white">
               {title}
             </h2>
