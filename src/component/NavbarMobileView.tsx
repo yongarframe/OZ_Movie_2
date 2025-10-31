@@ -63,7 +63,7 @@ export default function NavbarMobileView({
   }, [isMenuOpen])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 p-4 bg-gray-800">
+    <nav className="fixed top-0 left-0 right-0 z-50 p-4 border-b backdrop-blur-sm border-white/10 bg-black/90">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button

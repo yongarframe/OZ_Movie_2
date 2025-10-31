@@ -68,13 +68,18 @@
 }
 
 @layer utilities {
-  .mask-left-bottom {
+  .mask-left-right-bottom {
     -webkit-mask-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%),
-      linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%);
+      /* 왼쪽 투명 */
+      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%),
+      /* 오른쪽 투명 */
+        linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%),
+      /* 아래쪽 투명 */
+        linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%);
     -webkit-mask-composite: destination-in;
     mask-image:
-      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%),
+      linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%),
+      linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 20%),
       linear-gradient(to top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 80%);
     mask-composite: intersect;
   }

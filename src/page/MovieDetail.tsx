@@ -47,12 +47,12 @@ export default function MovieDetail() {
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
         {/* 배경 이미지 */}
         <div
-          className="flex justify-end w-full sticky top-0 overflow-hidden z-1"
+          className="flex justify-end w-full sticky top-[80px] overflow-hidden z-1 px-0 lg:px-20 "
           ref={scrollRef}
           style={{ opacity: opacity }}
         >
           <img
-            className="w-full h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-opacity duration-300 mask-left-bottom"
+            className="w-[1200px] h-[300px] sm:h-[400px] md:h-[600px] object-cover transition-opacity duration-300 mask-left-right-bottom"
             src={`https://image.tmdb.org/t/p/w1280${movieDetail.backdrop_path}`}
             alt={title}
           />
@@ -61,36 +61,36 @@ export default function MovieDetail() {
         {/* 콘텐츠 */}
         <div className="relative left-0 z-10 w-full -mt-[80px] sm:-mt-[150px] md:-mt-[300px]">
           <div className="p-4 sm:p-8 md:px-20 max-w-[875px]">
-            <h1 className="text-white text-2xl sm:text-3xl font-bold">
+            <h1 className="text-2xl font-bold text-white sm:text-3xl">
               {title}
             </h1>
             <p className="text-gray-400 text-base sm:text-[18px] mt-4 leading-relaxed">
               {overview}
             </p>
-            <div className="text-gray-400 flex flex-wrap gap-2 sm:gap-4 mt-4 items-center">
+            <div className="flex flex-wrap items-center gap-2 mt-4 text-gray-400 sm:gap-4">
               <div className="w-[30px] bg-amber-600 text-center rounded-md font-bold text-white">
                 {rating || '-'}
               </div>
               <div>{release_date}</div>
               <div>{formatMinute(runtime)}</div>
             </div>
-            <div className="flex flex-wrap gap-2 text-gray-400 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4 text-gray-400">
               {genres}
             </div>
           </div>
 
           {/* 상세정보 섹션 */}
-          <section className="mt-10 sm:mt-20 px-4 sm:px-8 md:px-20">
+          <section className="px-4 mt-10 sm:mt-20 sm:px-8 md:px-20">
             <div>
-              <div className="text-xl sm:text-2xl text-white pb-4 font-bold">
+              <div className="pb-4 text-xl font-bold text-white sm:text-2xl">
                 상세정보
               </div>
-              <hr className="border text-white mt-3" />
-              <h1 className="text-white text-xl sm:text-2xl font-bold mt-3">
+              <hr className="mt-3 text-white border" />
+              <h1 className="mt-3 text-xl font-bold text-white sm:text-2xl">
                 {movieDetail.title}*
               </h1>
             </div>
-            <div className="flex flex-col-1050 gap-8 mt-6">
+            <div className="flex gap-8 mt-6 flex-col-1050">
               {/* 왼쪽 정보 */}
               <div className="flex flex-col w-full md:w-[400px] text-white gap-4">
                 <div className="flex flex-col gap-1">
@@ -114,27 +114,27 @@ export default function MovieDetail() {
               </div>
 
               {/* 오른쪽 감독/출연 */}
-              <div className="flex flex-col text-white gap-4">
+              <div className="flex flex-col gap-4 text-white">
                 <div className="flex flex-col gap-1">
                   <span>감독:</span>
                   <span>{director?.name}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span>출연:</span>
-                  <ul className="flex gap-4 overflow-x-auto pb-2">
+                  <ul className="flex gap-4 pb-2 overflow-x-auto">
                     {cast.map((actor) => (
                       <li
                         key={actor.id}
-                        className="w-20 sm:w-28 text-center shrink-0"
+                        className="w-20 text-center sm:w-28 shrink-0"
                       >
                         {actor.profile_path && (
                           <img
                             src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
                             alt={actor.name}
-                            className="rounded-lg mb-2 w-full"
+                            className="w-full mb-2 rounded-lg"
                           />
                         )}
-                        <p className="text-xs sm:text-sm font-medium">
+                        <p className="text-xs font-medium sm:text-sm">
                           {actor.name}
                         </p>
                         <p className="text-xs text-gray-500">
