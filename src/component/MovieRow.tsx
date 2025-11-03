@@ -9,6 +9,7 @@ import type { MovieRowsType } from '@/types/MovieRowsType'
 import MovieCard from '@/component/MovieCard'
 import SkeletonMovieCard from '@/component/skeletonUI/SkeletonMovieCard'
 import useMouseDrag from '@/hooks/useMouseDrag'
+import { useFavorites } from '@/API/useFavorites'
 
 interface MovieRowProps extends MovieRowsType {
   userId: string | undefined
@@ -22,6 +23,7 @@ export default function MovieRow({
   userId,
   touchEnabled,
 }: MovieRowProps) {
+  const { toggleFavorite } = useFavorites(userId)
   const { ref, inView } = useInView({
     triggerOnce: true,
     rootMargin: '0px 0px -200px 0px',
@@ -60,10 +62,10 @@ export default function MovieRow({
     : 0
   return (
     <div className="my-20 min-h-[250px]" ref={ref}>
-      <h2 className="text-xl md:text-2xl font-bold text-white mb-4">{title}</h2>
+      <h2 className="mb-4 text-xl font-bold text-white md:text-2xl">{title}</h2>
       <ul
         ref={scrollRef}
-        className="flex overflow-x-auto hide-scrollbar space-x-5 cursor-grab active:cursor-grabbing select-none"
+        className="flex space-x-5 overflow-x-auto select-none hide-scrollbar cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
@@ -77,6 +79,15 @@ export default function MovieRow({
             userId={userId}
             touchEnabled={touchEnabled}
             preventClick={preventClick} // 드래그 시 클릭방지 플래그
+            onToggleFavorite={() =>
+              toggleFavorite({
+                movie_id: movie.id,
+                title: movie.title,
+                poster_path: movie.poster_path,
+                vote_average: movie.vote_average,
+                popularity: movie.popularity,
+              })
+            }
           />
         ))}
 

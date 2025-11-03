@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import type { movieCardData } from '@/types/movieCardData'
-import { addFavorite, removeFavorite } from '@/supabase/moviefavorite/favorites'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
 import { useFavorites } from '@/API/useFavorites'
-import { useQueryClient } from '@tanstack/react-query'
 import { Heart } from 'lucide-react'
 import CommonModal from '@/component/common/CommonModal'
 import CommonButton from '@/component/common/CommonButton'
@@ -26,7 +24,6 @@ export default function MovieCard({
   poster_path,
   vote_average,
   title,
-  popularity,
   userId,
   onToggleFavorite,
   touchEnabled,
@@ -40,8 +37,6 @@ export default function MovieCard({
   const [shareErrorMessage, setShareErrorMessage] = useState<string | null>(
     null
   )
-
-  const queryClient = useQueryClient()
   const { data: favorites = [] } = useFavorites(userId)
 
   const isFavorite = favorites.some((fav) => fav.movie_id === id)
@@ -69,25 +64,6 @@ export default function MovieCard({
 
   const YT_EMBED = (key: string | null) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
-
-  const toggleFavorite = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    if (!userId) return
-    if (isFavorite) {
-      await removeFavorite(userId, id)
-    } else {
-      await addFavorite({
-        userId,
-        movieId: id,
-        title: title,
-        poster_path,
-        vote_average,
-        popularity,
-      })
-    }
-    queryClient.invalidateQueries({ queryKey: ['favorites', userId] })
-    onToggleFavorite?.()
-  }
 
   const handleMouseEnter = () => {
     // 마우스 진입 시, 0.5초 후에 isHovered를 true로 설정
@@ -136,7 +112,10 @@ export default function MovieCard({
             <button
               aria-label="toggle favorite"
               className="absolute right-2 top-2 z-30 inline-flex items-center justify-center rounded-full bg-black/40 p-1.5 text-white transition hover:bg-black/60"
-              onClick={toggleFavorite}
+              onClick={(e) => {
+                e.stopPropagation()
+                onToggleFavorite?.()
+              }}
             >
               <Heart
                 className={`h-5 w-5 cursor-pointer z-30 ${

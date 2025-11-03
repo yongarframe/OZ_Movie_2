@@ -1,4 +1,5 @@
 import { supabaseClient } from '@/supabase/context/supabaseClient'
+import type { FavoriteMovieData } from '@/types/favoriteMovieData'
 
 // 즐겨찾기 추가
 export async function addFavorite({
@@ -15,7 +16,7 @@ export async function addFavorite({
   poster_path: string
   vote_average: number
   popularity: number
-}) {
+}): Promise<FavoriteMovieData[]> {
   const { data, error } = await supabaseClient
     .from('favorites')
     .insert([

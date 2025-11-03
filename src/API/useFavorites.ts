@@ -25,8 +25,9 @@ export function useFavorites(userId: string | undefined) {
 
       if (isFav) {
         await removeFavorite(userId, movie.movie_id)
+        return { action: 'remove', movie }
       } else {
-        await addFavorite({
+        const added = await addFavorite({
           userId,
           movieId: movie.movie_id,
           title: movie.title,
@@ -34,10 +35,22 @@ export function useFavorites(userId: string | undefined) {
           vote_average: movie.vote_average,
           popularity: movie.popularity,
         })
+        return { action: 'add', movie: added[0] }
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favorites', userId] })
+    onSuccess: (result) => {
+      queryClient.setQueryData<FavoriteMovieData[]>(
+        ['favorites', userId],
+        (prev) => {
+          if (!prev) return result.action === 'add' ? [result.movie] : []
+
+          if (result.action === 'add') {
+            return [...prev, result.movie]
+          } else if (result.action === 'remove') {
+            return prev.filter((m) => m.movie_id !== result.movie.movie_id)
+          }
+        }
+      )
     },
   })
 
