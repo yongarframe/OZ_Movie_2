@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
 import type { MovieCardRenderData } from '@/types/movieCardRenderData'
-import { useFavorites } from '@/api/useFavorites'
+import { useFavorites } from '@/hooks/queries/useFavorites'
 import { Heart } from 'lucide-react'
 import CommonModal from '@/component/common/CommonModal'
 import CommonButton from '@/component/common/CommonButton'
@@ -38,7 +38,8 @@ export default function MovieCard({
 
   const isFavorite = favorites.some((fav) => fav.movie_id === id)
 
-  const { data: trailerKey } = useTrailerKey(String(id), hover)
+  const { data: trailerKey, isSuccess } = useTrailerKey(String(id), hover)
+
   const YT_EMBED = (key: string | null) =>
     `https://www.youtube.com/embed/${key}?autoplay=1&mute=1&controls=0&playsinline=1&loop=1&playlist=${key}`
 
@@ -80,8 +81,10 @@ export default function MovieCard({
             />
             <iframe
               title="trailer"
-              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
-              src={hover ? YT_EMBED(trailerKey ?? null) : undefined}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${hover && isSuccess ? 'opacity-100 pointer-events-none' : 'opacity-0 pointer-events-none'}`}
+              src={
+                hover && isSuccess ? YT_EMBED(trailerKey ?? null) : undefined
+              }
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
               draggable={false}
