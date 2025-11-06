@@ -1,4 +1,4 @@
-import { api } from '@/API/mainApi'
+import { api } from '@/api/mainApi'
 import type { FetchCredits } from '@/types/movieDetail'
 import type { MovieReleaseData } from '@/types/MovieReleaseData'
 

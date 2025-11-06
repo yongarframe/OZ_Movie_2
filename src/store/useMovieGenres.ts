@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { api } from '@/API/mainApi'
+import { api } from '@/api/mainApi'
 
 interface Genre {
   id: number

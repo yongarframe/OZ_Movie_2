@@ -10,7 +10,7 @@ const queryClient = new QueryClient({})
 
 createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
-    {import.meta.env.MODE === 'development' && <ReactQueryDevtools />}
+    <ReactQueryDevtools />
     <SupabaseProvider>
       <BrowserRouter>
         <App />

@@ -9,7 +9,7 @@ import type { MovieRowsType } from '@/types/MovieRowsType'
 import MovieCard from '@/component/MovieCard'
 import SkeletonMovieCard from '@/component/skeletonUI/SkeletonMovieCard'
 import useMouseDrag from '@/hooks/useMouseDrag'
-import { useFavorites } from '@/API/useFavorites'
+import { useFavorites } from '@/api/useFavorites'
 
 interface MovieRowProps extends MovieRowsType {
   userId: string | undefined

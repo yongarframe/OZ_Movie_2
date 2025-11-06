@@ -1,4 +1,4 @@
-import { useFavorites } from '@/API/useFavorites'
+import { useFavorites } from '@/api/useFavorites'
 import MovieCard from '@/component/MovieCard'
 import useIsTouchDevice from '@/hooks/useIsTouchDevice'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'

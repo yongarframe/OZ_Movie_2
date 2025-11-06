@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { type MovieData } from '@/types/MovieData'
-import { api } from '@/API/mainApi'
+import { api } from '@/api/mainApi'
 
 interface MovieDataState {
   movieData: MovieData[]

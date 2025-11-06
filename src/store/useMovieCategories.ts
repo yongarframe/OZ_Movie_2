@@ -5,7 +5,7 @@ import {
   fetchTopRated,
   fetchUpcoming,
   fetchPopular,
-} from '@/API/movieService'
+} from '@/api/movieService'
 import type { MovieData } from '@/types/MovieData'
 
 export const useNowPlaying = (enabled = true) =>

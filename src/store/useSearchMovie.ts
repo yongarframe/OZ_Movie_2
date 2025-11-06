@@ -1,4 +1,4 @@
-import { api } from '@/API/mainApi'
+import { api } from '@/api/mainApi'
 import type { MovieData } from '@/types/MovieData'
 import { create } from 'zustand'
 
