@@ -1,24 +1,29 @@
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import SkeletonMovieDetail from '../component/skeletonUI/SkeletonMovieDetail'
-import { useMovieDetail } from '@/store/useMovieDetail'
 import ScrollToTop from '@/component/ScrollToTop'
 import formatMinute from '@/util/formatMinute'
 import CommentList from '@/component/CommentList'
 import { useSupabaseUser } from '@/supabase/moviefavorite/useSupabaseUser'
 import { useMovieDetailData } from '@/hooks/useMovieDetailData'
+import { useMovieDetail } from '@/hooks/queries/useMovieDetail'
 
 export default function MovieDetail() {
   const user = useSupabaseUser()
   const { id: movieId } = useParams()
-  const { movieDetail, fetchMovieDetail, isLoading } = useMovieDetail()
+  // const { movieDetail, fetchMovieDetail, isLoading } = useMovieDetail()
+
+  const { data: movieDetail, isPending: isLoading } = useMovieDetail(
+    movieId ?? ''
+  )
+
   const [scrollYPosition, setScrollYPosition] = useState(0)
   const scrollRef = useRef(null)
   const { cast, director, rating } = useMovieDetailData(movieId)
 
-  useEffect(() => {
-    if (movieId) fetchMovieDetail(movieId)
-  }, [movieId, fetchMovieDetail])
+  // useEffect(() => {
+  //   if (movieId) fetchMovieDetail(movieId)
+  // }, [movieId, fetchMovieDetail])
 
   const handleScroll = () => {
     const currentY = window.pageYOffset
