@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export function useMovieDetail(id: string) {
   return useQuery({
-    queryFn: () => fetchMovieDetail(id),
+    queryFn: ({ signal }) => fetchMovieDetail(id, signal),
     queryKey: ['movieDetail', id],
     enabled: !!id,
   })

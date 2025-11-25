@@ -1,6 +1,6 @@
 ## 📖 프로젝트 소개
 
-TMDB API와 Supabase를 활용하여 만든 영화 정보 및 커뮤니티 웹 애플리케이션입니다. 
+TMDB API와 Supabase를 활용하여 만든 영화 정보 및 커뮤니티 웹 애플리케이션입니다.
 <br/>
 사용자는 다양한 영화를 탐색하고, 상세 정보를 확인하며, 다른 사용자들과 소통할 수 있습니다.
 
@@ -34,8 +34,8 @@ TMDB API와 Supabase를 활용하여 만든 영화 정보 및 커뮤니티 웹 �
 - **Framework & Language**: React, TypeScript, Vite
 - **Styling**: TailwindCSS, clsx, CVA, tailwind-merge
 - **State Management**
-   - Server State : Tanstack Query
-   - Client State : Zustand
+  - Server State : Tanstack Query
+  - Client State : Zustand
 - **Routing**: react-router-dom
 - **Data Fetching/caching**: Axios, TanStack Query
 

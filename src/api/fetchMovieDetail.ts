@@ -2,13 +2,14 @@ import type { MovieDetail } from '@/types/movieDetail'
 
 const API = import.meta.env.VITE_API_TOKEN
 
-export async function fetchMovieDetail(id: string) {
+export async function fetchMovieDetail(id: string, signal: AbortSignal) {
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
       Authorization: `Bearer ${API}`,
     },
+    signal,
   }
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?language=ko`,
